@@ -27,7 +27,7 @@ use Illuminate\Support\Carbon;
  */
 
 /**
- * EscolaLms\TopicTypeGift\Models\Project
+ * EscolaLms\TopicTypeGift\Models\GiftQuiz
  *
  * @property int $id
  * @property string $value
