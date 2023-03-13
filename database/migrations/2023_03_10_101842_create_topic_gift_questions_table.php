@@ -15,6 +15,7 @@ class CreateTopicGiftQuestionsTable extends Migration
             $table->timestamps();
         });
     }
+
     public function down(): void
     {
         Schema::dropIfExists('topic_gift_questions');
