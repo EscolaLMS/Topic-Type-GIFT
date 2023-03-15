@@ -34,7 +34,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/GiftQuestion"
+                                            "$ref": "#/components/schemas/AdminGiftQuestionResource"
                                         },
                                         "message": {
                                             "type": "string"
@@ -93,7 +93,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/GiftQuestion"
+                                            "$ref": "#/components/schemas/AdminGiftQuestionResource"
                                         },
                                         "message": {
                                             "type": "string"
@@ -164,7 +164,7 @@
                 },
                 "type": "object"
             },
-            "GiftQuestion": {
+            "AdminGiftQuestionResource": {
                 "properties": {
                     "id": {
                         "description": "id",
