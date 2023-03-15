@@ -35,7 +35,7 @@ class QuestionStrategyTest extends TestCase
      * @dataProvider questionDataProvider
      * @throws UnknownGiftTypeException
      */
-    public function testShouldReturnCorrectTitle(string $question, string $type, string $title, string $questionForStudent, array $options): void
+    public function testShouldReturnCorrectDataForStudent(string $question, string $type, string $title, string $questionForStudent, array $options): void
     {
         /** @var GiftQuestion $question */
         $question = GiftQuestion::factory()
