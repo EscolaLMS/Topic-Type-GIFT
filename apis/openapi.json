@@ -150,7 +150,8 @@
             "AdminGiftQuestionRequest": {
                 "required": [
                     "topic_gift_quiz_id",
-                    "value"
+                    "value",
+                    "score"
                 ],
                 "properties": {
                     "topic_gift_quiz_id": {
@@ -160,6 +161,11 @@
                     "value": {
                         "description": "value",
                         "type": "string"
+                    },
+                    "score": {
+                        "description": "max score",
+                        "type": "number",
+                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -173,6 +179,14 @@
                     "value": {
                         "description": "value",
                         "type": "string"
+                    },
+                    "type": {
+                        "description": "type",
+                        "type": "string"
+                    },
+                    "score": {
+                        "description": "score",
+                        "type": "number"
                     }
                 },
                 "type": "object"
