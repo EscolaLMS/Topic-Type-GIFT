@@ -5,6 +5,51 @@
         "version": "0.0.1"
     },
     "paths": {
+        "/api/quiz-answers": {
+            "post": {
+                "tags": [
+                    "Gift Quiz Attempt"
+                ],
+                "summary": "Save your answer",
+                "description": "Save your answer",
+                "operationId": "fd7f60e107eb3a346b2d662a0a4341d9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SaveAttemptAnswerRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/admin/gift-questions": {
             "post": {
                 "tags": [
@@ -337,6 +382,27 @@
                     "topic_gift_quiz_id": {
                         "description": "topic_gift_quiz_id",
                         "type": "number"
+                    }
+                },
+                "type": "object"
+            },
+            "SaveAttemptAnswerRequest": {
+                "required": [
+                    "topic_gift_question_id",
+                    "answer"
+                ],
+                "properties": {
+                    "topic_gift_question_id": {
+                        "description": "question id",
+                        "type": "number"
+                    },
+                    "topic_gift_quiz_attempt_id": {
+                        "description": "attempt id",
+                        "type": "number"
+                    },
+                    "answer": {
+                        "description": "answer",
+                        "type": "object"
                     }
                 },
                 "type": "object"
