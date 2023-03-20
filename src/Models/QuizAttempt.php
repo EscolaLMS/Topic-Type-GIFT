@@ -35,6 +35,11 @@ class QuizAttempt extends Model
         'end_at',
     ];
 
+    public $casts = [
+        'started_at' => 'datetime',
+        'end_at' => 'datetime',
+    ];
+
     public function giftQuiz(): BelongsTo
     {
         return $this->belongsTo(GiftQuiz::class, 'topic_gift_quiz_id');
