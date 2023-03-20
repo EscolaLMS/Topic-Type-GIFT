@@ -23,6 +23,7 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
         Route::prefix('quiz-answers')->group(function () {
             Route::patch('{id}', [AttemptAnswerApiAdminController::class, 'update']);
         });
+
     });
 
     Route::prefix('quiz-attempts')->group(function () {
