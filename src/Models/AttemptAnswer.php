@@ -38,6 +38,7 @@ class AttemptAnswer extends Model
     ];
 
     public $casts = [
+        'score' => 'float',
         'answer' => 'array',
     ];
 
