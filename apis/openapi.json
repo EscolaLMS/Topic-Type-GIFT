@@ -106,6 +106,54 @@
                 ]
             }
         },
+        "/api/quiz-answers/all": {
+            "post": {
+                "tags": [
+                    "Gift Quiz Attempt"
+                ],
+                "summary": "Save your all answers",
+                "description": "Save your all answers",
+                "operationId": "9c9842a41c90811ea5d9906ad83b8829",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SaveAllAttemptAnswerRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/QuizAttemptSimpleResource"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/admin/gift-questions": {
             "post": {
                 "tags": [
@@ -579,6 +627,36 @@
                 },
                 "type": "object"
             },
+            "SaveAllAttemptAnswerRequest": {
+                "required": [
+                    "topic_gift_quiz_attempt_id",
+                    "answers"
+                ],
+                "properties": {
+                    "topic_gift_quiz_attempt_id": {
+                        "description": "attempt id",
+                        "type": "number"
+                    },
+                    "answers": {
+                        "description": "answers",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "topic_gift_question_id": {
+                                    "description": "topic_gift_question_id",
+                                    "type": "number"
+                                },
+                                "answer": {
+                                    "description": "answer",
+                                    "type": "object"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "SaveAttemptAnswerRequest": {
                 "required": [
                     "topic_gift_question_id",
@@ -646,6 +724,35 @@
                 },
                 "type": "object"
             },
+            "GiftQuestionResource": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "number"
+                    },
+                    "type": {
+                        "description": "type",
+                        "type": "string"
+                    },
+                    "score": {
+                        "description": "score",
+                        "type": "number"
+                    },
+                    "title": {
+                        "description": "title",
+                        "type": "string"
+                    },
+                    "question": {
+                        "description": "question",
+                        "type": "string"
+                    },
+                    "options": {
+                        "description": "options",
+                        "type": "object"
+                    }
+                },
+                "type": "object"
+            },
             "QuizAttemptSimpleResource": {
                 "properties": {
                     "id": {
@@ -669,6 +776,13 @@
                         "description": "end_at",
                         "type": "string",
                         "format": "date-time"
+                    },
+                    "questions": {
+                        "description": "questions",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GiftQuestionResource"
+                        }
                     }
                 },
                 "type": "object"
