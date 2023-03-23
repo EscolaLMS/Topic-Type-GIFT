@@ -6,6 +6,7 @@ use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
 use EscolaLms\TopicTypeGift\Tests\TestCase;
 use EscolaLms\Settings\Database\Seeders\PermissionTableSeeder as SettingsPermissionSeeder;
+use Illuminate\Support\Facades\Config;
 
 class AdminAdministrableConfigTest extends TestCase
 {
@@ -15,6 +16,7 @@ class AdminAdministrableConfigTest extends TestCase
     {
         parent::setUp();
         $this->seed(SettingsPermissionSeeder::class);
+        Config::set('escola_settings.use_database', true);
     }
 
     public function testAdministrableConfigApi(): void
