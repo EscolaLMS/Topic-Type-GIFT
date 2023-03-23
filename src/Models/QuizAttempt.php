@@ -25,6 +25,7 @@ use Illuminate\Support\Carbon;
  *
  * @property-read GiftQuiz $giftQuiz
  * @property-read AttemptAnswer[]|Collection $answers
+ * @property-read User $user
  *
  */
 class QuizAttempt extends Model

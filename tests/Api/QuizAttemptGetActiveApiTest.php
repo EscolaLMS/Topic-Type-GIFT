@@ -3,11 +3,14 @@
 namespace EscolaLms\TopicTypeGift\Tests\Api;
 
 use EscolaLms\Core\Tests\CreatesUsers;
+use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Queue;
 
 class QuizAttemptGetActiveApiTest extends GiftQuestionTestCase
 {
@@ -32,6 +35,8 @@ class QuizAttemptGetActiveApiTest extends GiftQuestionTestCase
 
     public function testCreateNewQuizAttempt(): void
     {
+        Queue::fake();
+
         $student = $this->makeStudent();
         $this->topic->course->users()->sync($student);
 
@@ -45,6 +50,13 @@ class QuizAttemptGetActiveApiTest extends GiftQuestionTestCase
             'user_id' => $student->getKey(),
             'topic_gift_quiz_id' => $this->quiz->getKey(),
         ]);
+
+        $attempt = QuizAttempt::query()->where('user_id', $student->getKey())->first();
+
+        Queue::assertPushed(function (MarkAttemptAsEnded $job) use ($attempt) {
+            $this->assertEquals($attempt->end_at->format('Y-m-d H:i'), $job->delay->format('Y-m-d H:i'));
+            return true;
+        });
     }
 
     public function testShouldNotCreateQuizAttemptWhenMaxNumberIsExceeded(): void
@@ -101,6 +113,7 @@ class QuizAttemptGetActiveApiTest extends GiftQuestionTestCase
 
     public function testShouldSetDefaultAttemptEndTimeWhenQuizHasNoTimeSet(): void
     {
+        Bus::fake();
         Config::set(SettingsServiceProvider::KEY . 'max_quiz_time', 123);
 
         $this->quiz = GiftQuiz::factory()->state(['max_execution_time' => null])->create();

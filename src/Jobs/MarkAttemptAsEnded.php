@@ -2,6 +2,7 @@
 
 namespace EscolaLms\TopicTypeGift\Jobs;
 
+use EscolaLms\TopicTypeGift\Events\QuizAttemptFinishedEvent;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\QuizAttemptRepositoryContract;
 use Illuminate\Bus\Queueable;
@@ -32,5 +33,6 @@ class MarkAttemptAsEnded implements ShouldQueue
         }
 
         $attemptRepository->update(['end_at' => Carbon::now()], $this->quizAttemptId);
+        event(new QuizAttemptFinishedEvent($result->user, $result));
     }
 }

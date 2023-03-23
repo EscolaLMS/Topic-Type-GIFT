@@ -7,6 +7,7 @@ use EscolaLms\TopicTypeGift\Dtos\Criteria\PageDto;
 use EscolaLms\TopicTypeGift\Dtos\Criteria\QuizAttemptCriteriaDto;
 use EscolaLms\TopicTypeGift\Dtos\QuizAttemptDto;
 use EscolaLms\TopicTypeGift\Exceptions\TooManyAttemptsException;
+use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
@@ -62,11 +63,15 @@ class QuizAttemptService implements QuizAttemptServiceContract
             throw new TooManyAttemptsException();
         }
 
-        /** @var QuizAttempt */
-        return $this->attemptRepository->create(array_merge($dto->toArray(), [
+        /** @var QuizAttempt $attempt */
+        $attempt =  $this->attemptRepository->create(array_merge($dto->toArray(), [
             'end_at' => $quiz->max_execution_time
                 ? Carbon::now()->addMinutes($quiz->max_execution_time)
                 : Carbon::now()->addMinutes(Config::get(SettingsServiceProvider::KEY . 'max_quiz_time', 120)),
         ]));
+
+        MarkAttemptAsEnded::dispatch($attempt->getKey())->delay($attempt->end_at);
+
+        return $attempt;
     }
 }

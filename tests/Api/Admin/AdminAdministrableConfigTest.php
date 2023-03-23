@@ -5,10 +5,17 @@ namespace EscolaLms\TopicTypeGift\Tests\Api\Admin;
 use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\TopicTypeGift\Providers\SettingsServiceProvider;
 use EscolaLms\TopicTypeGift\Tests\TestCase;
+use EscolaLms\Settings\Database\Seeders\PermissionTableSeeder as SettingsPermissionSeeder;
 
-class CourseAdministrableConfigTest extends TestCase
+class AdminAdministrableConfigTest extends TestCase
 {
     use CreatesUsers;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->seed(SettingsPermissionSeeder::class);
+    }
 
     public function testAdministrableConfigApi(): void
     {
