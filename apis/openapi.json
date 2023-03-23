@@ -483,15 +483,15 @@
                 "tags": [
                     "Gift Quiz Attempt"
                 ],
-                "summary": "Store a newly Quiz Attempt",
+                "summary": "Create a new attempt or return an active attempt",
                 "description": "Store Gift Quiz Attempt",
-                "operationId": "e82f99cdd219fd3b8f2bf24ff05d2a42",
+                "operationId": "bf1d8f3865e5ba758513c06cb0c44151",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/CreateQuizAttemptRequest"
+                                "$ref": "#/components/schemas/GetActiveAttemptRequest"
                             }
                         }
                     }
@@ -507,7 +507,7 @@
                                             "type": "boolean"
                                         },
                                         "data": {
-                                            "$ref": "#/components/schemas/QuizAttemptSimpleResource"
+                                            "$ref": "#/components/schemas/QuizAttemptResource"
                                         },
                                         "message": {
                                             "type": "string"
@@ -572,6 +572,53 @@
                     }
                 ]
             }
+        },
+        "/api/quiz-attempts/{id}/end": {
+            "post": {
+                "tags": [
+                    "Gift Quiz Attempt"
+                ],
+                "summary": "Finish quiz attempt",
+                "operationId": "a7566469f785b6ccc54fc28f4abad015",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/QuizAttemptResource"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
         }
     },
     "components": {
@@ -615,7 +662,7 @@
                 },
                 "type": "object"
             },
-            "CreateQuizAttemptRequest": {
+            "GetActiveAttemptRequest": {
                 "required": [
                     "topic_gift_quiz_id"
                 ],
@@ -753,6 +800,51 @@
                 },
                 "type": "object"
             },
+            "QuizAttemptResource": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "number"
+                    },
+                    "user_id": {
+                        "description": "user_id",
+                        "type": "number"
+                    },
+                    "topic_gift_quiz_id": {
+                        "description": "topic_gift_quiz_id",
+                        "type": "number"
+                    },
+                    "started_at": {
+                        "description": "started_at",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "end_at": {
+                        "description": "end_at",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "is_ended": {
+                        "description": "is_ended",
+                        "type": "boolean"
+                    },
+                    "questions": {
+                        "description": "questions",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GiftQuestionResource"
+                        }
+                    },
+                    "answers": {
+                        "description": "answers",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AttemptAnswerResource"
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "QuizAttemptSimpleResource": {
                 "properties": {
                     "id": {
@@ -777,12 +869,9 @@
                         "type": "string",
                         "format": "date-time"
                     },
-                    "questions": {
-                        "description": "questions",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/GiftQuestionResource"
-                        }
+                    "is_ended": {
+                        "description": "is_ended",
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
