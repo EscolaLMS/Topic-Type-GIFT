@@ -35,7 +35,7 @@ class QuizAttemptEndApiTest extends TestCase
             ->assertForbidden();
     }
 
-    public function testQuizAttemptRead(): void
+    public function testFinishQuizAttempt(): void
     {
         $this->assertFalse($this->attempt->isEnded());
 

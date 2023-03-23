@@ -48,7 +48,7 @@ class QuizAttemptApiController extends EscolaLmsBaseController implements QuizAt
 
     public function markAsEnded(EndQuizAttemptRequest $request): JsonResponse
     {
-        MarkAttemptAsEnded::dispatch($request->getId());
+        MarkAttemptAsEnded::dispatchSync($request->getId());
         $result = $this->attemptService->findById($request->getId());
 
         return $this->sendResponseForResource(QuizAttemptResource::make($result));

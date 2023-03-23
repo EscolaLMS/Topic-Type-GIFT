@@ -141,7 +141,7 @@ interface QuizAttemptApiSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/QuizAttemptSimpleResource"
+     *                      ref="#/components/schemas/QuizAttemptResource"
      *                  ),
      *                  @OA\Property(
      *                      property="message",
@@ -183,7 +183,7 @@ interface QuizAttemptApiSwagger
      *                  ),
      *                  @OA\Property(
      *                      property="data",
-     *                      ref="#/components/schemas/QuizAttemptSimpleResource"
+     *                      ref="#/components/schemas/QuizAttemptResource"
      *                  ),
      *                  @OA\Property(
      *                      property="message",
