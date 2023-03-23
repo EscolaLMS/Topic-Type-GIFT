@@ -36,6 +36,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          format="date-time"
  *      ),
  *      @OA\Property(
+ *          property="is_ended",
+ *          description="is_ended",
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
  *          property="questions",
  *          description="questions",
  *          type="array",
@@ -62,7 +67,8 @@ class QuizAttemptSimpleResource extends JsonResource
             'started_at' => $this->started_at,
             'end_at' => $this->end_at,
             'max_score' => $maxScore,
-            'result_score' => $resultScore,
+            'result_score' => $this->isEnded() ? $resultScore : null,
+            'is_ended' => $this->isEnded(),
             'questions' => GiftQuestionResource::collection($this->giftQuiz->questions->sortBy('id')),
         ];
     }
