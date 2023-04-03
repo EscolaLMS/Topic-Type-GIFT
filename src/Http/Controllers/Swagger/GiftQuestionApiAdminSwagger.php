@@ -13,9 +13,9 @@ interface GiftQuestionApiAdminSwagger
     /**
      * @OA\Post(
      *      path="/api/admin/gift-questions",
-     *      summary="Store a newly Qift Question",
+     *      summary="Store a newly Gift Question",
      *      tags={"Admin Gift Question"},
-     *      description="Store Qift Question",
+     *      description="Store Gift Question",
      *      security={
      *          {"passport": {}},
      *      },
@@ -55,9 +55,9 @@ interface GiftQuestionApiAdminSwagger
     /**
      * @OA\Put(
      *      path="/api/admin/gift-questions/{id}",
-     *      summary="Update Qift Question",
+     *      summary="Update Gift Question",
      *      tags={"Admin Gift Question"},
-     *      description="Update Qift Question",
+     *      description="Update Gift Question",
      *      security={
      *          {"passport": {}},
      *      },
@@ -150,9 +150,9 @@ interface GiftQuestionApiAdminSwagger
     /**
      * @OA\Post(
      *      path="/api/admin/gift-questions/sort",
-     *      summary="Sort Qift Question",
+     *      summary="Sort Gift Questions",
      *      tags={"Admin Gift Question"},
-     *      description="Sort Qift Question",
+     *      description="Sort Gift Questions",
      *      security={
      *          {"passport": {}},
      *      },

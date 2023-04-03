@@ -54,8 +54,8 @@ class AdminSortGiftQuestionRequest extends FormRequest
     {
         return [
             'orders' => ['required', 'array', 'min:1'],
-            'orders.id.*' => ['required', 'integer', 'exists:topic_gift_questions,id'],
-            'orders.order.*' => ['required', 'integer', 'min:0'],
+            'orders.*.id' => ['required', 'integer', 'exists:topic_gift_questions,id'],
+            'orders.*.order' => ['required', 'integer', 'min:0'],
         ];
     }
 
