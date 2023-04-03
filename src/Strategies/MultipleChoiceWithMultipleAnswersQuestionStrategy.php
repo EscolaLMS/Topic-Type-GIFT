@@ -33,7 +33,7 @@ class MultipleChoiceWithMultipleAnswersQuestionStrategy extends QuestionStrategy
         }
 
         $score = $this->questionModel->score * $percent * 0.01;
-        $result->setScore($score > $this->questionModel->score ? $this->questionModel->score : $score );
+        $result->setScore($score > $this->questionModel->score ? $this->questionModel->score : $score);
 
         return $result;
     }
