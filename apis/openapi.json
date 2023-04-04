@@ -159,8 +159,8 @@
                 "tags": [
                     "Admin Gift Question"
                 ],
-                "summary": "Store a newly Qift Question",
-                "description": "Store Qift Question",
+                "summary": "Store a newly Gift Question",
+                "description": "Store Gift Question",
                 "operationId": "a79967746b027cc49b3b6f9f2ab3902c",
                 "requestBody": {
                     "required": true,
@@ -207,8 +207,8 @@
                 "tags": [
                     "Admin Gift Question"
                 ],
-                "summary": "Update Qift Question",
-                "description": "Update Qift Question",
+                "summary": "Update Gift Question",
+                "description": "Update Gift Question",
                 "operationId": "0bbd14615f7ef123d8917e2398098ab7",
                 "parameters": [
                     {
@@ -283,6 +283,51 @@
                         "description": "successful operation",
                         "content": {
                             "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/gift-questions/sort": {
+            "post": {
+                "tags": [
+                    "Admin Gift Question"
+                ],
+                "summary": "Sort Gift Questions",
+                "description": "Sort Gift Questions",
+                "operationId": "0e5a7ced5b57c644e8d503305c66524f",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminSortGiftQuestionRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
                         }
                     }
                 },
@@ -642,6 +687,36 @@
                         "description": "max score",
                         "type": "number",
                         "example": "1"
+                    },
+                    "order": {
+                        "description": "order",
+                        "type": "integer",
+                        "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "AdminSortGiftQuestionRequest": {
+                "properties": {
+                    "orders": {
+                        "description": "orders",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/AdminSortGiftQuestion"
+                        }
+                    }
+                },
+                "type": "object"
+            },
+            "AdminSortGiftQuestion": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "integer"
+                    },
+                    "order": {
+                        "description": "order",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -742,6 +817,10 @@
                     "score": {
                         "description": "score",
                         "type": "number"
+                    },
+                    "order": {
+                        "description": "order",
+                        "type": "number"
                     }
                 },
                 "type": "object"
@@ -783,6 +862,10 @@
                     },
                     "score": {
                         "description": "score",
+                        "type": "number"
+                    },
+                    "order": {
+                        "description": "order",
                         "type": "number"
                     },
                     "title": {
