@@ -4,6 +4,8 @@ namespace EscolaLms\TopicTypeGift\Tests\Api\Admin;
 
 use EscolaLms\Core\Tests\CreatesUsers;
 use EscolaLms\TopicTypeGift\Database\Seeders\TopicTypeGiftPermissionSeeder;
+use EscolaLms\TopicTypeGift\Models\AttemptAnswer;
+use EscolaLms\TopicTypeGift\Models\GiftQuestion;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use EscolaLms\TopicTypeGift\Tests\TestCase;
@@ -50,5 +52,71 @@ class AdminListQuizAttemptApiTest extends TestCase
         $this->actingAs($this->makeAdmin(), 'api')->getJson('api/admin/quiz-attempts?user_id=' . $student->getKey())
             ->assertOk()
             ->assertJsonCount(3, 'data');
+    }
+
+    public function testAdminQuizAttemptListSorting(): void
+    {
+        $student = $this->makeStudent();
+
+        $quiz1 = GiftQuiz::factory()->create();
+
+        $question1 = GiftQuestion::factory()->create([
+            'topic_gift_quiz_id' => $quiz1->getKey(),
+            'score' => 3,
+        ]);
+        $question2 = GiftQuestion::factory()->create([
+            'topic_gift_quiz_id' => $quiz1->getKey(),
+            'score' => 4,
+        ]);
+
+        $attempt = QuizAttempt::factory()
+            ->create([
+                'user_id' => $student->getKey(),
+                'topic_gift_quiz_id' => $quiz1->getKey(),
+                'end_at' => now()->subDays(5),
+            ]);
+        AttemptAnswer::factory()->create([
+            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_question_id' => $question1->getKey(),
+            'score' => 2,
+        ]);
+        AttemptAnswer::factory()->create([
+            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_question_id' => $question2->getKey(),
+            'score' => 3,
+        ]);
+
+        $quiz2 = GiftQuiz::factory()->create();
+
+        $question1 = GiftQuestion::factory()->create([
+            'topic_gift_quiz_id' => $quiz2->getKey(),
+            'score' => 5,
+        ]);
+        $question2 = GiftQuestion::factory()->create([
+            'topic_gift_quiz_id' => $quiz2->getKey(),
+            'score' => 7,
+        ]);
+
+        $attempt = QuizAttempt::factory()
+            ->create([
+                'user_id' => $student->getKey(),
+                'topic_gift_quiz_id' => $quiz2->getKey(),
+                'end_at' => now()->subDays(5),
+            ]);
+
+        AttemptAnswer::factory()->create([
+            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_question_id' => $question1->getKey(),
+            'score' => 4,
+        ]);
+
+        AttemptAnswer::factory()->create([
+            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_question_id' => $question2->getKey(),
+            'score' => 7,
+        ]);
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')->getJson('api/admin/quiz-attempts');
+        dd($response->json());
     }
 }

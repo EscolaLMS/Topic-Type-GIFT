@@ -33,8 +33,6 @@ class QuizAttemptCriteriaDto extends BaseCriteriaDto implements DtoContract, Ins
             $criteria->push(new DateCriterion('end_at', $request->get('date_to'), '<='));
         }
 
-        $criteria->push(new OrderCriterion($request->get('order_by') ?? 'id', $request->get('order') ?? 'desc'));
-
         return new static($criteria);
     }
 }
