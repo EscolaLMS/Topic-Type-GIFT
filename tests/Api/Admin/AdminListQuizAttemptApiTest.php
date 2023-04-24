@@ -120,6 +120,10 @@ class AdminListQuizAttemptApiTest extends TestCase
             'order_by' => 'result_score',
             'order' => 'DESC',
         ]);
+        var_dump($quiz1->getKey());
+        var_dump($quiz2->getKey());
+        var_dump($response->json('data'));
+
 
         $this->assertTrue($response->json('data.0.id') === $quiz2->getKey());
         $this->assertTrue($response->json('data.1.id') === $quiz1->getKey());
