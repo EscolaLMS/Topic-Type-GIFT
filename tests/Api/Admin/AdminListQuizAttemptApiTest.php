@@ -69,19 +69,19 @@ class AdminListQuizAttemptApiTest extends TestCase
             'score' => 15,
         ]);
 
-        $attempt = QuizAttempt::factory()
+        $attempt1 = QuizAttempt::factory()
             ->create([
                 'user_id' => $student->getKey(),
                 'topic_gift_quiz_id' => $quiz1->getKey(),
                 'end_at' => now()->subDays(5),
             ]);
         AttemptAnswer::factory()->create([
-            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_quiz_attempt_id' => $attempt1->getKey(),
             'topic_gift_question_id' => $question1->getKey(),
             'score' => 1,
         ]);
         AttemptAnswer::factory()->create([
-            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_quiz_attempt_id' => $attempt1->getKey(),
             'topic_gift_question_id' => $question2->getKey(),
             'score' => 2,
         ]);
@@ -97,7 +97,7 @@ class AdminListQuizAttemptApiTest extends TestCase
             'score' => 8,
         ]);
 
-        $attempt = QuizAttempt::factory()
+        $attempt2 = QuizAttempt::factory()
             ->create([
                 'user_id' => $student->getKey(),
                 'topic_gift_quiz_id' => $quiz2->getKey(),
@@ -105,13 +105,13 @@ class AdminListQuizAttemptApiTest extends TestCase
             ]);
 
         AttemptAnswer::factory()->create([
-            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_quiz_attempt_id' => $attempt2->getKey(),
             'topic_gift_question_id' => $question1->getKey(),
             'score' => 8,
         ]);
 
         AttemptAnswer::factory()->create([
-            'topic_gift_quiz_attempt_id' => $attempt->getKey(),
+            'topic_gift_quiz_attempt_id' => $attempt2->getKey(),
             'topic_gift_question_id' => $question2->getKey(),
             'score' => 6,
         ]);
@@ -120,36 +120,32 @@ class AdminListQuizAttemptApiTest extends TestCase
             'order_by' => 'result_score',
             'order' => 'DESC',
         ]);
-        var_dump($quiz1->getKey());
-        var_dump($quiz2->getKey());
-        var_dump($response->json('data'));
 
-
-        $this->assertTrue($response->json('data.0.id') === $quiz2->getKey());
-        $this->assertTrue($response->json('data.1.id') === $quiz1->getKey());
+        $this->assertTrue($response->json('data.0.id') === $attempt2->getKey());
+        $this->assertTrue($response->json('data.1.id') === $attempt1->getKey());
 
         $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
             'order_by' => 'result_score',
             'order' => 'ASC',
         ]);
 
-        $this->assertTrue($response->json('data.0.id') === $quiz1->getKey());
-        $this->assertTrue($response->json('data.1.id') === $quiz2->getKey());
+        $this->assertTrue($response->json('data.0.id') === $attempt1->getKey());
+        $this->assertTrue($response->json('data.1.id') === $attempt2->getKey());
 
         $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
             'order_by' => 'max_score',
             'order' => 'DESC',
         ]);
 
-        $this->assertTrue($response->json('data.0.id') === $quiz1->getKey());
-        $this->assertTrue($response->json('data.1.id') === $quiz2->getKey());
+        $this->assertTrue($response->json('data.0.id') === $attempt1->getKey());
+        $this->assertTrue($response->json('data.1.id') === $attempt2->getKey());
 
         $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
             'order_by' => 'max_score',
             'order' => 'ASC',
         ]);
 
-        $this->assertTrue($response->json('data.0.id') === $quiz2->getKey());
-        $this->assertTrue($response->json('data.1.id') === $quiz1->getKey());
+        $this->assertTrue($response->json('data.0.id') === $attempt2->getKey());
+        $this->assertTrue($response->json('data.1.id') === $attempt1->getKey());
     }
 }
