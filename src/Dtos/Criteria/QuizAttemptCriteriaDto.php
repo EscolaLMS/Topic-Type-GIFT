@@ -9,7 +9,6 @@ use EscolaLms\Core\Repositories\Criteria\Primitives\DateCriterion;
 use EscolaLms\Core\Repositories\Criteria\Primitives\EqualCriterion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
-use EscolaLms\Courses\Repositories\Criteria\Primitives\OrderCriterion;
 
 class QuizAttemptCriteriaDto extends BaseCriteriaDto implements DtoContract, InstantiateFromRequest
 {

@@ -28,8 +28,10 @@ class QuizAttemptRepository extends BaseRepository implements QuizAttemptReposit
     public function findByCriteria(array $criteria, int $perPage, ?OrderDto $orderDto = null): LengthAwarePaginator
     {
         $query = $this->queryWithAppliedCriteria($criteria);
+        if (!is_null($orderDto)) {
+            $query = $this->orderBy($query, $orderDto);
+        }
 
-        $query = $this->orderBy($query);
         return $query->paginate($perPage);
     }
 
@@ -51,13 +53,13 @@ class QuizAttemptRepository extends BaseRepository implements QuizAttemptReposit
         return match ($orderDto->getOrderBy()) {
             'result_score' => $query
                 ->withSum('answers', 'score')
-                ->orderBy('answers_sum_score', 'desc'),
+                ->orderBy('answers_sum_score', $orderDto->getOrder() ?? 'asc'),
             'max_score' => $query
                 ->select(['question_scores.total_score', 'topic_gift_quiz_attempts.*'])
                 ->leftJoinSub(GiftQuestion::selectRaw('topic_gift_questions.topic_gift_quiz_id, SUM(score) as total_score')->groupBy('topic_gift_questions.topic_gift_quiz_id'), 'question_scores', function ($join) {
                     $join->on('question_scores.topic_gift_quiz_id', '=', 'topic_gift_quiz_attempts.topic_gift_quiz_id');
                 })
-                ->orderBy('total_score', 'desc'),
+                ->orderBy('total_score', $orderDto->getOrder() ?? 'asc'),
             default => $query->orderBy($orderDto->getOrderBy() ?? 'id', $orderDto->getOrder() ?? 'asc'),
         };
 

@@ -62,11 +62,11 @@ class AdminListQuizAttemptApiTest extends TestCase
 
         $question1 = GiftQuestion::factory()->create([
             'topic_gift_quiz_id' => $quiz1->getKey(),
-            'score' => 3,
+            'score' => 10,
         ]);
         $question2 = GiftQuestion::factory()->create([
             'topic_gift_quiz_id' => $quiz1->getKey(),
-            'score' => 4,
+            'score' => 15,
         ]);
 
         $attempt = QuizAttempt::factory()
@@ -78,23 +78,23 @@ class AdminListQuizAttemptApiTest extends TestCase
         AttemptAnswer::factory()->create([
             'topic_gift_quiz_attempt_id' => $attempt->getKey(),
             'topic_gift_question_id' => $question1->getKey(),
-            'score' => 2,
+            'score' => 1,
         ]);
         AttemptAnswer::factory()->create([
             'topic_gift_quiz_attempt_id' => $attempt->getKey(),
             'topic_gift_question_id' => $question2->getKey(),
-            'score' => 3,
+            'score' => 2,
         ]);
 
         $quiz2 = GiftQuiz::factory()->create();
 
         $question1 = GiftQuestion::factory()->create([
             'topic_gift_quiz_id' => $quiz2->getKey(),
-            'score' => 5,
+            'score' => 10,
         ]);
         $question2 = GiftQuestion::factory()->create([
             'topic_gift_quiz_id' => $quiz2->getKey(),
-            'score' => 7,
+            'score' => 8,
         ]);
 
         $attempt = QuizAttempt::factory()
@@ -107,16 +107,45 @@ class AdminListQuizAttemptApiTest extends TestCase
         AttemptAnswer::factory()->create([
             'topic_gift_quiz_attempt_id' => $attempt->getKey(),
             'topic_gift_question_id' => $question1->getKey(),
-            'score' => 4,
+            'score' => 8,
         ]);
 
         AttemptAnswer::factory()->create([
             'topic_gift_quiz_attempt_id' => $attempt->getKey(),
             'topic_gift_question_id' => $question2->getKey(),
-            'score' => 7,
+            'score' => 6,
         ]);
 
-        $response = $this->actingAs($this->makeAdmin(), 'api')->getJson('api/admin/quiz-attempts');
-        dd($response->json());
+        $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
+            'order_by' => 'result_score',
+            'order' => 'DESC',
+        ]);
+
+        $this->assertTrue($response->json('data.0.id') === $quiz2->getKey());
+        $this->assertTrue($response->json('data.1.id') === $quiz1->getKey());
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
+            'order_by' => 'result_score',
+            'order' => 'ASC',
+        ]);
+
+        $this->assertTrue($response->json('data.0.id') === $quiz1->getKey());
+        $this->assertTrue($response->json('data.1.id') === $quiz2->getKey());
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
+            'order_by' => 'max_score',
+            'order' => 'DESC',
+        ]);
+
+        $this->assertTrue($response->json('data.0.id') === $quiz1->getKey());
+        $this->assertTrue($response->json('data.1.id') === $quiz2->getKey());
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')->json('GET', 'api/admin/quiz-attempts', [
+            'order_by' => 'max_score',
+            'order' => 'ASC',
+        ]);
+
+        $this->assertTrue($response->json('data.0.id') === $quiz2->getKey());
+        $this->assertTrue($response->json('data.1.id') === $quiz1->getKey());
     }
 }
