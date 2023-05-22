@@ -338,6 +338,53 @@
                 ]
             }
         },
+        "/api/gift-quizes/{id}": {
+            "get": {
+                "tags": [
+                    "Gift Quiz"
+                ],
+                "summary": "Get gift quiz by id",
+                "operationId": "ec6c2d15f45187401f13623e8eba9f85",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/AdminGiftQuizResource"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/admin/quiz-attempts": {
             "get": {
                 "tags": [
@@ -820,6 +867,31 @@
                     },
                     "order": {
                         "description": "order",
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            },
+            "AdminGiftQuizResource": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "number"
+                    },
+                    "value": {
+                        "description": "value",
+                        "type": "string"
+                    },
+                    "type": {
+                        "description": "type",
+                        "type": "string"
+                    },
+                    "max_attempts": {
+                        "description": "max attempts",
+                        "type": "number"
+                    },
+                    "max_execution_time": {
+                        "description": "max execution time",
                         "type": "number"
                     }
                 },
