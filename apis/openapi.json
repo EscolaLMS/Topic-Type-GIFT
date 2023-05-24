@@ -338,13 +338,13 @@
                 ]
             }
         },
-        "/api/gift-quizes/{id}": {
+        "/api/admin/gift-quizes/{id}": {
             "get": {
                 "tags": [
                     "Gift Quiz"
                 ],
                 "summary": "Get gift quiz by id",
-                "operationId": "ec6c2d15f45187401f13623e8eba9f85",
+                "operationId": "7661a85ea8314c3d780951b8554e89cb",
                 "parameters": [
                     {
                         "name": "id",
