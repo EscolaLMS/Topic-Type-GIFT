@@ -10,8 +10,8 @@ class AddCategoryIdFieldToTopicGiftQuestionsTable extends Migration
     {
         Schema::table('topic_gift_questions', function (Blueprint $table) {
             $table->foreignId('category_id')
-                ->nullable()
-                ->constrained('categories');
+//                ->nullable()
+                ->constrained();
         });
     }
 
