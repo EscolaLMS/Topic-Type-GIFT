@@ -739,6 +739,11 @@
                         "description": "order",
                         "type": "integer",
                         "example": "1"
+                    },
+                    "category_id": {
+                        "description": "category_id",
+                        "type": "integer",
+                        "example": "1"
                     }
                 },
                 "type": "object"
@@ -868,6 +873,10 @@
                     "order": {
                         "description": "order",
                         "type": "number"
+                    },
+                    "category_id": {
+                        "description": "category_id",
+                        "type": "integer"
                     }
                 },
                 "type": "object"
@@ -939,6 +948,10 @@
                     "order": {
                         "description": "order",
                         "type": "number"
+                    },
+                    "category_id": {
+                        "description": "category_id",
+                        "type": "integer"
                     },
                     "title": {
                         "description": "title",
