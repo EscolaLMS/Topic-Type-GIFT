@@ -383,6 +383,61 @@
                         "passport": []
                     }
                 ]
+            },
+            "put": {
+                "tags": [
+                    "Gift Quiz"
+                ],
+                "summary": "Update gift quiz by id",
+                "operationId": "80cb525db89211e95d97f5f39716df18",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUpdateGiftQuizRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "$ref": "#/components/schemas/AdminGiftQuizResource"
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
             }
         },
         "/api/admin/quiz-attempts": {
@@ -789,6 +844,26 @@
                 },
                 "type": "object"
             },
+            "AdminUpdateGiftQuizRequest": {
+                "required": [
+                    "value"
+                ],
+                "properties": {
+                    "value": {
+                        "type": "string"
+                    },
+                    "max_attempts": {
+                        "type": "integer"
+                    },
+                    "max_execution_time": {
+                        "type": "integer"
+                    },
+                    "min_pass_score": {
+                        "type": "number"
+                    }
+                },
+                "type": "object"
+            },
             "GetActiveAttemptRequest": {
                 "required": [
                     "topic_gift_quiz_id"
@@ -902,6 +977,17 @@
                     "max_execution_time": {
                         "description": "max execution time",
                         "type": "number"
+                    },
+                    "min_pass_score": {
+                        "description": "min pass score",
+                        "type": "number"
+                    },
+                    "questions": {
+                        "description": "questions",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/GiftQuestionResource"
+                        }
                     }
                 },
                 "type": "object"
@@ -1040,6 +1126,10 @@
                     "is_ended": {
                         "description": "is_ended",
                         "type": "boolean"
+                    },
+                    "min_pass_score": {
+                        "description": "min pass score",
+                        "type": "number"
                     }
                 },
                 "type": "object"
@@ -1062,6 +1152,10 @@
                     },
                     "max_execution_time": {
                         "description": "max execution time in minutes",
+                        "type": "number"
+                    },
+                    "min_pass_score": {
+                        "description": "minimum score to pass the quiz",
                         "type": "number"
                     }
                 },
