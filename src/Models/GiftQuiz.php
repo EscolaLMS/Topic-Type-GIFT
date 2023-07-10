@@ -66,6 +66,7 @@ class GiftQuiz extends AbstractTopicContent
         'value',
         'max_attempts',
         'max_execution_time',
+        'min_pass_score',
     ];
 
     protected $casts = [
@@ -82,6 +83,7 @@ class GiftQuiz extends AbstractTopicContent
             'value' => ['required', 'string'],
             'max_attempts' => ['nullable', 'integer', 'min:1'],
             'max_execution_time' => ['nullable', 'integer', 'min:1'],
+            'min_pass_score' => ['nullable', 'numeric', 'min:0'],
         ];
     }
 
