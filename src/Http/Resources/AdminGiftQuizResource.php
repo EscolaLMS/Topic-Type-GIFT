@@ -33,6 +33,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="max execution time",
  *          type="number"
  *      ),
+ *      @OA\Property(
+ *          property="questions",
+ *          description="questions",
+ *          type="array",
+ *          @OA\Items(ref="#/components/schemas/GiftQuestionResource")
+ *      ),
  * )
  *
  */
@@ -49,6 +55,7 @@ class AdminGiftQuizResource extends JsonResource
             'value' => $this->value,
             'max_attempts' => $this->max_attempts,
             'max_execution_time' => $this->max_execution_time,
+            'questions' => AdminGiftQuestionResource::collection($this->questions->sortBy('order')),
         ];
     }
 }
