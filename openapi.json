@@ -134,9 +134,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/QuizAttemptSimpleResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -182,9 +180,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/AdminGiftQuestionResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -241,9 +237,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/AdminGiftQuestionResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -365,9 +359,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/AdminGiftQuizResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -420,9 +412,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/AdminGiftQuizResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -493,9 +483,7 @@
                                         },
                                         "data": {
                                             "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/QuizAttemptSimpleResource"
-                                            }
+                                            "items": {}
                                         },
                                         "message": {
                                             "type": "string"
@@ -541,9 +529,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/QuizAttemptSimpleResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -606,9 +592,7 @@
                                         },
                                         "data": {
                                             "type": "array",
-                                            "items": {
-                                                "$ref": "#/components/schemas/QuizAttemptSimpleResource"
-                                            }
+                                            "items": {}
                                         },
                                         "message": {
                                             "type": "string"
@@ -653,9 +637,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/QuizAttemptResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -700,9 +682,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/QuizAttemptSimpleResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -747,9 +727,7 @@
                                         "success": {
                                             "type": "boolean"
                                         },
-                                        "data": {
-                                            "$ref": "#/components/schemas/QuizAttemptResource"
-                                        },
+                                        "data": {},
                                         "message": {
                                             "type": "string"
                                         }
@@ -808,22 +786,7 @@
                     "orders": {
                         "description": "orders",
                         "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/AdminSortGiftQuestion"
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "AdminSortGiftQuestion": {
-                "properties": {
-                    "id": {
-                        "description": "id",
-                        "type": "integer"
-                    },
-                    "order": {
-                        "description": "order",
-                        "type": "integer"
+                        "items": {}
                     }
                 },
                 "type": "object"
@@ -923,240 +886,6 @@
                     "answer": {
                         "description": "answer",
                         "type": "object"
-                    }
-                },
-                "type": "object"
-            },
-            "AdminGiftQuestionResource": {
-                "properties": {
-                    "id": {
-                        "description": "id",
-                        "type": "number"
-                    },
-                    "value": {
-                        "description": "value",
-                        "type": "string"
-                    },
-                    "type": {
-                        "description": "type",
-                        "type": "string"
-                    },
-                    "score": {
-                        "description": "score",
-                        "type": "number"
-                    },
-                    "order": {
-                        "description": "order",
-                        "type": "number"
-                    },
-                    "category_id": {
-                        "description": "category_id",
-                        "type": "integer"
-                    }
-                },
-                "type": "object"
-            },
-            "AdminGiftQuizResource": {
-                "properties": {
-                    "id": {
-                        "description": "id",
-                        "type": "number"
-                    },
-                    "value": {
-                        "description": "value",
-                        "type": "string"
-                    },
-                    "type": {
-                        "description": "type",
-                        "type": "string"
-                    },
-                    "max_attempts": {
-                        "description": "max attempts",
-                        "type": "number"
-                    },
-                    "max_execution_time": {
-                        "description": "max execution time",
-                        "type": "number"
-                    },
-                    "min_pass_score": {
-                        "description": "min pass score",
-                        "type": "number"
-                    },
-                    "questions": {
-                        "description": "questions",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/GiftQuestionResource"
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "AttemptAnswerResource": {
-                "properties": {
-                    "id": {
-                        "description": "id",
-                        "type": "number"
-                    },
-                    "topic_gift_question_id": {
-                        "description": "topic_gift_question_id",
-                        "type": "number"
-                    },
-                    "answer": {
-                        "description": "answer",
-                        "type": "object"
-                    },
-                    "score": {
-                        "description": "score",
-                        "type": "number"
-                    },
-                    "feedback": {
-                        "description": "feedback",
-                        "type": "string"
-                    }
-                },
-                "type": "object"
-            },
-            "GiftQuestionResource": {
-                "properties": {
-                    "id": {
-                        "description": "id",
-                        "type": "number"
-                    },
-                    "type": {
-                        "description": "type",
-                        "type": "string"
-                    },
-                    "score": {
-                        "description": "score",
-                        "type": "number"
-                    },
-                    "order": {
-                        "description": "order",
-                        "type": "number"
-                    },
-                    "category_id": {
-                        "description": "category_id",
-                        "type": "integer"
-                    },
-                    "title": {
-                        "description": "title",
-                        "type": "string"
-                    },
-                    "question": {
-                        "description": "question",
-                        "type": "string"
-                    },
-                    "options": {
-                        "description": "options",
-                        "type": "object"
-                    }
-                },
-                "type": "object"
-            },
-            "QuizAttemptResource": {
-                "properties": {
-                    "id": {
-                        "description": "id",
-                        "type": "number"
-                    },
-                    "user_id": {
-                        "description": "user_id",
-                        "type": "number"
-                    },
-                    "topic_gift_quiz_id": {
-                        "description": "topic_gift_quiz_id",
-                        "type": "number"
-                    },
-                    "started_at": {
-                        "description": "started_at",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "end_at": {
-                        "description": "end_at",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "is_ended": {
-                        "description": "is_ended",
-                        "type": "boolean"
-                    },
-                    "questions": {
-                        "description": "questions",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/GiftQuestionResource"
-                        }
-                    },
-                    "answers": {
-                        "description": "answers",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/AttemptAnswerResource"
-                        }
-                    }
-                },
-                "type": "object"
-            },
-            "QuizAttemptSimpleResource": {
-                "properties": {
-                    "id": {
-                        "description": "id",
-                        "type": "number"
-                    },
-                    "user_id": {
-                        "description": "user_id",
-                        "type": "number"
-                    },
-                    "topic_gift_quiz_id": {
-                        "description": "topic_gift_quiz_id",
-                        "type": "number"
-                    },
-                    "started_at": {
-                        "description": "started_at",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "end_at": {
-                        "description": "end_at",
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "is_ended": {
-                        "description": "is_ended",
-                        "type": "boolean"
-                    },
-                    "min_pass_score": {
-                        "description": "min pass score",
-                        "type": "number"
-                    }
-                },
-                "type": "object"
-            },
-            "TopicGiftQuiz": {
-                "required": [
-                    "value"
-                ],
-                "properties": {
-                    "id": {
-                        "description": "id"
-                    },
-                    "value": {
-                        "description": "value",
-                        "type": "string"
-                    },
-                    "max_attempts": {
-                        "description": "max_attempts",
-                        "type": "number"
-                    },
-                    "max_execution_time": {
-                        "description": "max execution time in minutes",
-                        "type": "number"
-                    },
-                    "min_pass_score": {
-                        "description": "minimum score to pass the quiz",
-                        "type": "number"
                     }
                 },
                 "type": "object"
