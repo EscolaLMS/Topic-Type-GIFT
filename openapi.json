@@ -332,6 +332,99 @@
                 ]
             }
         },
+        "/api/admin/gift-questions/export": {
+            "get": {
+                "tags": [
+                    "Admin Gift Question"
+                ],
+                "summary": "Export Gift Questions",
+                "description": "Export Gift Questions",
+                "operationId": "e74c5a3189f139146d599945c9d62d3b",
+                "parameters": [
+                    {
+                        "name": "topic_gift_quiz_id",
+                        "in": "path",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "category_ids[]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    },
+                    {
+                        "name": "ids[]",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {}
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successful operation",
+                        "content": {
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {}
+                        }
+                    },
+                    "422": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/admin/gift-questions/import": {
+            "post": {
+                "tags": [
+                    "Admin Gift Question"
+                ],
+                "summary": "Import Gift Questions",
+                "description": "Import Gift Questions",
+                "operationId": "8e8833c511b1a5deb3021d8f4f4e8a80",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminImportGiftQuestionsRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful operation"
+                    },
+                    "422": {
+                        "description": "Bad request",
+                        "content": {
+                            "application/json": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/admin/gift-quizes/{id}": {
             "get": {
                 "tags": [
@@ -777,6 +870,23 @@
                         "description": "category_id",
                         "type": "integer",
                         "example": "1"
+                    }
+                },
+                "type": "object"
+            },
+            "AdminImportGiftQuestionsRequest": {
+                "required": [
+                    "topic_gift_quiz_id",
+                    "file"
+                ],
+                "properties": {
+                    "topic_gift_quiz_id": {
+                        "description": "topic_gift_quiz_id",
+                        "type": "number"
+                    },
+                    "file": {
+                        "description": "file",
+                        "type": "file"
                     }
                 },
                 "type": "object"
