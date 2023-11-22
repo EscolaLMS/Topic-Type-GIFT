@@ -556,6 +556,14 @@
                         }
                     },
                     {
+                        "name": "course_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "number"
+                        }
+                    },
+                    {
                         "name": "user_id",
                         "in": "query",
                         "required": false,
@@ -996,6 +1004,36 @@
                     "answer": {
                         "description": "answer",
                         "type": "object"
+                    }
+                },
+                "type": "object"
+            },
+            "GiftCourseSimpleResource": {
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "GiftUserSimpleResource": {
+                "properties": {
+                    "id": {
+                        "description": "id",
+                        "type": "number"
+                    },
+                    "first_name": {
+                        "type": "string"
+                    },
+                    "last_name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "email",
+                        "type": "string"
                     }
                 },
                 "type": "object"
