@@ -272,6 +272,21 @@ trait GiftQuestionTesting
                 'questionForStudent' => 'Jesus Christ was from',
                 'options' => [],
             ],
+            [
+                'question' => 'Who\'s buried in Grant\'s tomb\?{=a) Grant ~b) no one ~c) Napoleon ~d) Churchill ~e) Mother Teresa }',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'title' => '',
+                'questionForStudent' => 'Who\'s buried in Grant\'s tomb?',
+                'options' => [
+                    'answers' => [
+                        'a) Grant',
+                        'b) no one',
+                        'c) Napoleon',
+                        'd) Churchill',
+                        'e) Mother Teresa'
+                    ],
+                ]
+            ],
         ];
     }
 }
