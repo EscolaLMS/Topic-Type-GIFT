@@ -79,7 +79,7 @@ trait GiftQuestionTesting
                         'no one',
                         'Napoleon',
                         'Churchill',
-                        'Mother Teresa'
+                        'Mother Teresa',
                     ],
                 ]
             ],
@@ -94,7 +94,7 @@ trait GiftQuestionTesting
                         'No one',
                         'Napoleon',
                         'Churchill',
-                        'Mother Teresa'
+                        'Mother Teresa',
                     ],
                 ]
             ],
@@ -283,7 +283,7 @@ trait GiftQuestionTesting
                         'b) no one',
                         'c) Napoleon',
                         'd) Churchill',
-                        'e) Mother Teresa'
+                        'e) Mother Teresa',
                     ],
                 ]
             ],
