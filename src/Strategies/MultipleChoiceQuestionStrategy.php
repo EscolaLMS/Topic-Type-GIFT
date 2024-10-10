@@ -53,7 +53,7 @@ class MultipleChoiceQuestionStrategy extends QuestionStrategy
     {
         $answerBlock = $this->service->getAnswerFromQuestion($this->questionPlainText);
 
-        $pattern = chr(58) . "$answer(.*?)(~|$)" . chr(58);
+        $pattern = chr(58) . preg_quote($answer, '/') . "(.*?)(~|$)" . chr(58);
         if (preg_match($pattern, $answerBlock, $matches)) {
             return trim(Str::replace('#', ' ', $matches[1]));
         }

@@ -319,6 +319,23 @@ class AttemptAnswerSaveApiTest extends TestCase
                 'score' => 1,
                 'resultScore' => 0.75,
             ],
+            [
+                'question' => 'Who\'s buried in Grant\'s tomb?{~a) no one ~b) Napoleon =c) Grant ~d) Churchill ~e) Mother Teresa }',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE,
+                'answer' => [AnswerKeyEnum::TEXT => 'c) Grant'],
+            ],
+            [
+                'question' => '::Jesus hometown::Jesus Christ was from {
+                              ~a) Jerusalem#This was an important city, but the wrong answer.
+                              ~%25%b) Bethlehem#He was born here, but not raised here.
+                              ~%50%c) Galilee#You need to be more specific.
+                              =d) Nazareth#Yes! That\'s right!
+                              }.',
+                'type' => QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS,
+                'answer' => [AnswerKeyEnum::MULTIPLE => ['b) Bethlehem', 'c) Galilee']],
+                'score' => 1,
+                'resultScore' => 0.75,
+            ],
         ];
     }
 }
