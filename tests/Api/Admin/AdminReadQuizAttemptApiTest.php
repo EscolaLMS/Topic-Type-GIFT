@@ -46,7 +46,10 @@ class AdminReadQuizAttemptApiTest extends TestCase
                     'max_score',
                     'min_pass_score',
                     'result_score',
+                    'is_ended',
                     'answers',
+                    'topic',
+                    'course',
                 ],
             ]);
     }
