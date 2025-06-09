@@ -55,6 +55,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="course",
  *          type="object"
  *      ),
+ *      @OA\Property(
+ *          property="topic",
+ *          description="topic",
+ *          type="object"
+ *      ),
  * )
  *
  */
@@ -68,7 +73,8 @@ class QuizAttemptSimpleResource extends JsonResource
     {
         $maxScore = $this->giftQuiz->questions->sum('score');
         $resultScore = $this->answers->sum('score');
-        $course = $this->giftQuiz?->topic?->lesson?->course;
+        $topic = $this->giftQuiz?->topic;
+        $course = $topic?->lesson?->course;
 
         return [
             'id' => $this->id,
@@ -81,6 +87,7 @@ class QuizAttemptSimpleResource extends JsonResource
             'result_score' => $this->isEnded() ? $resultScore : null,
             'is_ended' => $this->isEnded(),
             'user' => UserSimpleResource::make($this->user),
+            'topic' => $topic ? TopicSimpleResource::make($topic) : null,
             'course' => $course ? CourseSimpleResource::make($course) : null,
         ];
     }
