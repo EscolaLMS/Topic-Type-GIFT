@@ -1019,6 +1019,17 @@
                 },
                 "type": "object"
             },
+            "GiftTopicSimpleResource": {
+                "properties": {
+                    "id": {
+                        "type": "number"
+                    },
+                    "title": {
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
             "GiftUserSimpleResource": {
                 "properties": {
                     "id": {
@@ -1039,5 +1050,23 @@
                 "type": "object"
             }
         }
-    }
+    },
+    "tags": [
+        {
+            "name": "Admin Gift Quiz Attempt",
+            "description": "Admin Gift Quiz Attempt"
+        },
+        {
+            "name": "Gift Quiz Attempt",
+            "description": "Gift Quiz Attempt"
+        },
+        {
+            "name": "Admin Gift Question",
+            "description": "Admin Gift Question"
+        },
+        {
+            "name": "Gift Quiz",
+            "description": "Gift Quiz"
+        }
+    ]
 }
