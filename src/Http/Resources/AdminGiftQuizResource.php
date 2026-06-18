@@ -39,6 +39,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          type="number"
  *      ),
  *      @OA\Property(
+ *          property="counts_to_grade",
+ *          description="whether the quiz counts towards the final grade",
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
  *          property="questions",
  *          description="questions",
  *          type="array",
@@ -61,6 +66,7 @@ class AdminGiftQuizResource extends JsonResource
             'max_attempts' => $this->max_attempts,
             'max_execution_time' => $this->max_execution_time,
             'min_pass_score' => $this->min_pass_score,
+            'counts_to_grade' => $this->counts_to_grade,
             'questions' => AdminGiftQuestionResource::collection($this->questions->sortBy('order')),
         ];
     }

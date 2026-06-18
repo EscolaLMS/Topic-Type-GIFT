@@ -49,4 +49,60 @@ class AdminUpdateGiftQuizApiTest extends TestCase
                 'questions' => [],
             ] + $data);
     }
+
+    public function testAdminUpdateGiftQuizSetsCountsToGrade(): void
+    {
+        $quiz = GiftQuiz::factory()->create(['counts_to_grade' => false]);
+
+        $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->putJson('api/admin/gift-quizes/' . $quiz->getKey(), [
+                'value' => $quiz->value,
+                'counts_to_grade' => true,
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['counts_to_grade' => true]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $quiz->getKey(),
+            'counts_to_grade' => true,
+        ]);
+    }
+
+    public function testAdminUpdateGiftQuizCanDisableCountsToGrade(): void
+    {
+        $quiz = GiftQuiz::factory()->create(['counts_to_grade' => true]);
+
+        $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->putJson('api/admin/gift-quizes/' . $quiz->getKey(), [
+                'value' => $quiz->value,
+                'counts_to_grade' => false,
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['counts_to_grade' => false]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $quiz->getKey(),
+            'counts_to_grade' => false,
+        ]);
+    }
+
+    public function testAdminUpdateGiftQuizKeepsCountsToGradeWhenOmitted(): void
+    {
+        $quiz = GiftQuiz::factory()->create(['counts_to_grade' => true]);
+
+        $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->putJson('api/admin/gift-quizes/' . $quiz->getKey(), [
+                'value' => $quiz->value,
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['counts_to_grade' => true]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $quiz->getKey(),
+            'counts_to_grade' => true,
+        ]);
+    }
 }
