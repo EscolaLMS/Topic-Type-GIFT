@@ -26,6 +26,11 @@ use Illuminate\Support\Carbon;
  * @property-read GiftQuiz $giftQuiz
  * @property-read AttemptAnswer[]|Collection $answers
  * @property-read User $user
+ * @property-read int|float $max_score
+ * @property-read int|float|null $result_score
+ * @property-read float|null $result_percent
+ * @property-read bool|null $is_passed
+ * @property-read int|null $correct_answers_count
  *
  */
 class QuizAttempt extends Model
@@ -69,6 +74,71 @@ class QuizAttempt extends Model
     public function scopeActive(Builder $query): void
     {
         $query->whereNull('end_at')->orWhere('end_at', '>=', Carbon::now());
+    }
+
+    /**
+     * Maximum points obtainable in the quiz (sum of question scores).
+     *
+     * @return int|float
+     */
+    public function getMaxScoreAttribute()
+    {
+        return $this->giftQuiz->questions->sum('score');
+    }
+
+    /**
+     * Points scored in the attempt; null until the attempt is ended.
+     *
+     * @return int|float|null
+     */
+    public function getResultScoreAttribute()
+    {
+        return $this->isEnded() ? $this->answers->sum('score') : null;
+    }
+
+    /**
+     * Result as a percent of the maximum score, rounded to 2 decimals.
+     * Null when not ended or when there is no maximum score.
+     */
+    public function getResultPercentAttribute(): ?float
+    {
+        $maxScore = $this->max_score;
+
+        return ($this->isEnded() && $maxScore > 0)
+            ? round($this->answers->sum('score') / $maxScore * 100, 2)
+            : null;
+    }
+
+    /**
+     * Whether the attempt reached min_pass_score.
+     * Null when not ended or when the quiz has no min_pass_score.
+     */
+    public function getIsPassedAttribute(): ?bool
+    {
+        $minPassScore = $this->giftQuiz->min_pass_score;
+
+        return ($this->isEnded() && $minPassScore !== null)
+            ? $this->answers->sum('score') >= $minPassScore
+            : null;
+    }
+
+    /**
+     * Number of answers awarded full points (answer.score >= question.score).
+     * Null when not ended.
+     */
+    public function getCorrectAnswersCountAttribute(): ?int
+    {
+        if (!$this->isEnded()) {
+            return null;
+        }
+
+        $questionScores = $this->giftQuiz->questions->keyBy('id');
+
+        return $this->answers->filter(function (AttemptAnswer $answer) use ($questionScores) {
+            $question = $questionScores->get($answer->topic_gift_question_id);
+
+            return $question !== null && $answer->score >= $question->score;
+        })->count();
     }
 
     protected static function newFactory(): QuizAttemptFactory
