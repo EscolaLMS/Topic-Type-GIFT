@@ -20,6 +20,7 @@ use Illuminate\Support\Carbon;
  * @property int $user_id
  * @property Carbon $started_at
  * @property Carbon $end_at
+ * @property string|null $tutor_feedback
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -39,11 +40,13 @@ class QuizAttempt extends Model
         'user_id',
         'started_at',
         'end_at',
+        'tutor_feedback',
     ];
 
     public $casts = [
         'started_at' => 'datetime',
         'end_at' => 'datetime',
+        'tutor_feedback' => 'string',
     ];
 
     public function giftQuiz(): BelongsTo
