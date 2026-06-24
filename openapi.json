@@ -941,6 +941,9 @@
                     },
                     "min_pass_score": {
                         "type": "number"
+                    },
+                    "counts_to_grade": {
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
