@@ -45,4 +45,48 @@ class TopicTypeGiftQuizCreateApiTest extends TestCase
             'max_execution_time' => 10,
         ]);
     }
+
+    public function testCreateGiftQuizDefaultsCountsToGradeToFalse(): void
+    {
+        $lesson = Lesson::factory()
+            ->for(Course::factory())
+            ->create();
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')
+            ->postJson('/api/admin/topics', [
+                'title' => 'GiftQuiz',
+                'lesson_id' => $lesson->getKey(),
+                'topicable_type' => GiftQuiz::class,
+                'value' => 'lorem ipsum',
+            ])
+            ->assertCreated();
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $response->getData()->data->topicable->id,
+            'counts_to_grade' => false,
+        ]);
+    }
+
+    public function testCreateGiftQuizWithCountsToGrade(): void
+    {
+        $lesson = Lesson::factory()
+            ->for(Course::factory())
+            ->create();
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')
+            ->postJson('/api/admin/topics', [
+                'title' => 'GiftQuiz',
+                'lesson_id' => $lesson->getKey(),
+                'topicable_type' => GiftQuiz::class,
+                'value' => 'lorem ipsum',
+                'counts_to_grade' => true,
+            ])
+            ->assertCreated()
+            ->assertJsonFragment(['counts_to_grade' => true]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $response->getData()->data->topicable->id,
+            'counts_to_grade' => true,
+        ]);
+    }
 }
