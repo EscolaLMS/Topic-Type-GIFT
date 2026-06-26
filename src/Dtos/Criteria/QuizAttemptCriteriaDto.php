@@ -49,6 +49,19 @@ class QuizAttemptCriteriaDto extends BaseCriteriaDto implements DtoContract, Ins
             );
         }
 
+        if ($request->get('quiz_name')) {
+            $criteria->push(
+                new RawCriterion('EXISTS (SELECT tgg.id
+                                      FROM topic_gift_quizzes tgg
+                                        JOIN topics t ON tgg.id = t.topicable_id
+                                      WHERE t.topicable_type = ?
+                                            AND t.title LIKE ?
+                                            AND topic_gift_quiz_attempts.topic_gift_quiz_id = tgg.id)',
+                    [GiftQuiz::class, '%' . $request->get('quiz_name') . '%']
+                )
+            );
+        }
+
         if (
             !$request->user()->can(TopicTypeGiftPermissionEnum::LIST_QUIZ_ATTEMPT) &&
             $request->user()->can(TopicTypeGiftPermissionEnum::LIST_SELF_QUIZ_ATTEMPT)

@@ -21,6 +21,7 @@ class ListQuizAttemptRequest extends FormRequest
         return [
             'order_by' => ['sometimes', 'string', 'in:id,user_id,topic_gift_quiz_id,started_at,end_at,max_score,result_score,created_at'],
             'order' => ['sometimes', 'string', 'in:ASC,DESC'],
+            'quiz_name' => ['nullable', 'string', 'min:1'],
         ];
     }
 
