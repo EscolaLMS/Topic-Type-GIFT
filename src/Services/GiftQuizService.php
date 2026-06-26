@@ -6,6 +6,7 @@ use EscolaLms\TopicTypeGift\Dtos\QuizDto;
 use EscolaLms\TopicTypeGift\Models\GiftQuiz;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\GiftQuizRepositoryContract;
 use EscolaLms\TopicTypeGift\Services\Contracts\GiftQuizServiceContract;
+use Illuminate\Database\Eloquent\Collection;
 
 class GiftQuizService implements GiftQuizServiceContract
 {
@@ -20,5 +21,10 @@ class GiftQuizService implements GiftQuizServiceContract
     {
         /** @var GiftQuiz */
         return $this->giftQuizRepository->update($dto->toArray(), $id);
+    }
+
+    public function getQuizzesByCourse(int $courseId): Collection
+    {
+        return $this->giftQuizRepository->getByCourseId($courseId);
     }
 }
