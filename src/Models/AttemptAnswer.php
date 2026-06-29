@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
  * @property array $answer
  * @property string $feedback
  * @property double $score
+ * @property Carbon|null $graded_at
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -35,11 +36,13 @@ class AttemptAnswer extends Model
         'answer',
         'feedback',
         'score',
+        'graded_at',
     ];
 
     public $casts = [
         'score' => 'float',
         'answer' => 'array',
+        'graded_at' => 'datetime',
     ];
 
     public function question(): BelongsTo

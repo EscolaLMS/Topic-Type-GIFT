@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypeGift\Jobs;
 
 use EscolaLms\TopicTypeGift\Events\QuizAttemptFinishedEvent;
+use EscolaLms\TopicTypeGift\Events\QuizAttemptJournalGradeReadyEvent;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\QuizAttemptRepositoryContract;
 use Illuminate\Bus\Queueable;
@@ -34,5 +35,12 @@ class MarkAttemptAsEnded implements ShouldQueue
 
         $attemptRepository->update(['end_at' => Carbon::now()], $this->quizAttemptId);
         event(new QuizAttemptFinishedEvent($result->user, $result));
+
+        // The journal grade is generated only once the whole attempt is graded.
+        // Auto-scored quizzes are fully graded on finish; quizzes with open questions
+        // wait for the lecturer (see AttemptAnswerService::adminUpdate).
+        if ($result->giftQuiz->counts_to_grade && $result->isFullyGraded()) {
+            event(new QuizAttemptJournalGradeReadyEvent($result->user, $result));
+        }
     }
 }

@@ -71,6 +71,15 @@ class QuizAttempt extends Model
         return $this->end_at != null && $this->end_at <= Carbon::now();
     }
 
+    /**
+     * Whether every answer of the attempt has been graded
+     * (auto-scored answers are graded on submission, essays once a lecturer scores them).
+     */
+    public function isFullyGraded(): bool
+    {
+        return !$this->answers()->whereNull('graded_at')->exists();
+    }
+
     public function scopeActive(Builder $query): void
     {
         $query->whereNull('end_at')->orWhere('end_at', '>=', Carbon::now());

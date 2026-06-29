@@ -11,4 +11,10 @@ interface QuestionStrategyContract
     public function getOptions(): array;
     public function checkAnswer(array $answer): CheckAnswerDto;
     public function getAnswerKey(): ?string;
+
+    /**
+     * Whether an answer to this question needs manual grading by a lecturer
+     * (i.e. it is not scored automatically on submission).
+     */
+    public function requiresManualGrading(): bool;
 }

@@ -16,4 +16,9 @@ class EssayQuestionStrategy extends QuestionStrategy
     {
         return AnswerKeyEnum::TEXT;
     }
+
+    public function requiresManualGrading(): bool
+    {
+        return true;
+    }
 }

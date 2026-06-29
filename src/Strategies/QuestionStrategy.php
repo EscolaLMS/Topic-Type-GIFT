@@ -42,6 +42,11 @@ abstract class QuestionStrategy implements QuestionStrategyContract
         return [];
     }
 
+    public function requiresManualGrading(): bool
+    {
+        return false;
+    }
+
     protected function removeFeedbackFromAnswer(string $answer): string
     {
         return trim(preg_replace('/#.*$/', '', trim($answer)));
