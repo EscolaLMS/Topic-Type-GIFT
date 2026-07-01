@@ -6,6 +6,7 @@ use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
 use EscolaLms\TopicTypeGift\Http\Controllers\Swagger\QuizAttemptApiAdminSwagger;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminListQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminReadQuizAttemptRequest;
+use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminUpdateQuizAttemptFeedbackRequest;
 use EscolaLms\TopicTypeGift\Http\Resources\QuizAttemptResource;
 use EscolaLms\TopicTypeGift\Http\Resources\QuizAttemptSimpleResource;
 use EscolaLms\TopicTypeGift\Services\Contracts\QuizAttemptServiceContract;
@@ -30,5 +31,12 @@ class QuizAttemptApiAdminController extends EscolaLmsBaseController implements Q
     public function read(AdminReadQuizAttemptRequest $request): JsonResponse
     {
         return $this->sendResponseForResource(QuizAttemptResource::make($request->getAttempt()));
+    }
+
+    public function feedback(AdminUpdateQuizAttemptFeedbackRequest $request): JsonResponse
+    {
+        $result = $this->attemptService->updateFeedback($request->getId(), $request->getFeedback());
+
+        return $this->sendResponseForResource(QuizAttemptResource::make($result), __('Updated successfully'));
     }
 }

@@ -19,4 +19,5 @@ interface QuizAttemptServiceContract
     public function findByUser(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto, int $userId): LengthAwarePaginator;
     public function findAll(QuizAttemptCriteriaDto $criteriaDto, PageDto $paginationDto, ?OrderDto $orderDto = null): LengthAwarePaginator;
     public function findById(int $id): QuizAttempt;
+    public function updateFeedback(int $id, ?string $feedback): QuizAttempt;
 }

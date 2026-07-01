@@ -47,6 +47,14 @@ class QuizAttemptService implements QuizAttemptServiceContract
         return $this->attemptRepository->find($id);
     }
 
+    public function updateFeedback(int $id, ?string $feedback): QuizAttempt
+    {
+        /** @var QuizAttempt */
+        return $this->attemptRepository->update([
+            'tutor_feedback' => $feedback === '' ? null : $feedback,
+        ], $id);
+    }
+
     /**
      * @throws TooManyAttemptsException
      */
