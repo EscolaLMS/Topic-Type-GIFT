@@ -648,6 +648,62 @@
                 ]
             }
         },
+        "/api/admin/quiz-attempts/{id}/feedback": {
+            "patch": {
+                "tags": [
+                    "Admin Gift Quiz Attempt"
+                ],
+                "summary": "Add, edit or remove tutor feedback for a quiz attempt",
+                "description": "Sets the tutor feedback (light rich text or video link) on a quiz attempt. Sending null or an empty string removes it.",
+                "operationId": "cae4f078652e88e8992514f50ffbba54",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/AdminUpdateQuizAttemptFeedbackRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {},
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/quiz-attempts": {
             "get": {
                 "tags": [
@@ -944,6 +1000,15 @@
                     },
                     "counts_to_grade": {
                         "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "AdminUpdateQuizAttemptFeedbackRequest": {
+                "properties": {
+                    "feedback": {
+                        "description": "Tutor feedback (light rich text or video link). Send null or empty to remove it.",
+                        "type": "string"
                     }
                 },
                 "type": "object"
