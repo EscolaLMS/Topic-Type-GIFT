@@ -39,6 +39,11 @@ use Illuminate\Support\Carbon;
  *          property="min_pass_score",
  *          description="minimum score to pass the quiz",
  *          type="number"
+ *      ),
+ *      @OA\Property(
+ *          property="counts_to_grade",
+ *          description="whether the quiz counts towards the final grade",
+ *          type="boolean"
  *      )
  * )
  */
@@ -51,6 +56,7 @@ use Illuminate\Support\Carbon;
  * @property ?integer $max_attempts
  * @property ?integer $max_execution_time
  * @property ?double $min_pass_score
+ * @property bool $counts_to_grade
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -67,6 +73,7 @@ class GiftQuiz extends AbstractTopicContent
         'max_attempts',
         'max_execution_time',
         'min_pass_score',
+        'counts_to_grade',
     ];
 
     protected $casts = [
@@ -75,6 +82,7 @@ class GiftQuiz extends AbstractTopicContent
         'max_attempts' => 'integer',
         'max_execution_time' => 'integer',
         'min_pass_score' => 'double',
+        'counts_to_grade' => 'boolean',
     ];
 
     public static function rules(): array
@@ -84,6 +92,7 @@ class GiftQuiz extends AbstractTopicContent
             'max_attempts' => ['nullable', 'integer', 'min:1'],
             'max_execution_time' => ['nullable', 'integer', 'min:1'],
             'min_pass_score' => ['nullable', 'numeric', 'min:0'],
+            'counts_to_grade' => ['boolean'],
         ];
     }
 

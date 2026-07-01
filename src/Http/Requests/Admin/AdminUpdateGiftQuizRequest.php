@@ -27,6 +27,10 @@ use Illuminate\Support\Facades\Gate;
  *          property="min_pass_score",
  *          type="number"
  *      ),
+ *      @OA\Property(
+ *          property="counts_to_grade",
+ *          type="boolean"
+ *      ),
  * )
  */
 class AdminUpdateGiftQuizRequest extends FormRequest
