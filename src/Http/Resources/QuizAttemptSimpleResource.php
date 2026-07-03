@@ -46,6 +46,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          type="number"
  *      ),
  *      @OA\Property(
+ *          property="tutor_feedback",
+ *          description="tutor feedback (only returned when the attempt is ended)",
+ *          type="string"
+ *      ),
+ *      @OA\Property(
  *          property="result_percent",
  *          description="result as percent of max score (null when not ended or no max)",
  *          type="number"
@@ -97,6 +102,7 @@ class QuizAttemptSimpleResource extends JsonResource
             'end_at' => $this->end_at,
             'max_score' => $this->max_score,
             'min_pass_score' => $this->giftQuiz->min_pass_score,
+            'tutor_feedback' => $this->isEnded() ? $this->tutor_feedback : null,
             'result_score' => $this->result_score,
             'result_percent' => $this->result_percent,
             'is_passed' => $this->is_passed,
