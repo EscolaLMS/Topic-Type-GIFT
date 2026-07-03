@@ -106,6 +106,69 @@ class AdminListQuizAttemptApiTest extends TestCase
             ->assertJsonCount(3, 'data');
     }
 
+    public function testAdminQuizAttemptListFilteringByQuizName(): void
+    {
+        $course1 = Course::factory()->create();
+        $course2 = Course::factory()->create();
+
+        $lesson1 = Lesson::factory()->state(['course_id' => $course1->getKey()])->create();
+        $lesson2 = Lesson::factory()->state(['course_id' => $course2->getKey()])->create();
+
+        $quiz1 = GiftQuiz::factory()->create();
+        $quiz2 = GiftQuiz::factory()->create();
+        $quiz3 = GiftQuiz::factory()->create();
+
+        // title is the quiz name (GiftQuiz.value is GIFT content, not the name)
+        $topic1 = Topic::factory()->state(['lesson_id' => $lesson1->getKey(), 'title' => 'Algebra Basics'])->create();
+        $topic2 = Topic::factory()->state(['lesson_id' => $lesson2->getKey(), 'title' => 'Geometry Intro'])->create();
+        $topic3 = Topic::factory()->state(['lesson_id' => $lesson2->getKey(), 'title' => 'Algebra Advanced'])->create();
+
+        $topic1->topicable()->associate($quiz1)->save();
+        $topic2->topicable()->associate($quiz2)->save();
+        $topic3->topicable()->associate($quiz3)->save();
+
+        QuizAttempt::factory()
+            ->state(new Sequence(
+                ['topic_gift_quiz_id' => $quiz1->getKey()], // Algebra Basics  / course1
+                ['topic_gift_quiz_id' => $quiz1->getKey()], // Algebra Basics  / course1
+                ['topic_gift_quiz_id' => $quiz2->getKey()], // Geometry Intro  / course2
+                ['topic_gift_quiz_id' => $quiz3->getKey()], // Algebra Advanced/ course2
+                ['topic_gift_quiz_id' => $quiz3->getKey()], // Algebra Advanced/ course2
+            ))
+            ->count(5)
+            ->create();
+
+        // no quiz_name -> no additional filter
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts')
+            ->assertOk()
+            ->assertJsonCount(5, 'data');
+
+        // partial match across two quizzes (Algebra Basics + Algebra Advanced)
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts?quiz_name=Algebra')
+            ->assertOk()
+            ->assertJsonCount(4, 'data');
+
+        // partial match for a single quiz
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts?quiz_name=Geometry')
+            ->assertOk()
+            ->assertJsonCount(1, 'data');
+
+        // combined with course_id (course2 Algebra -> only quiz3)
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts?course_id=' . $course2->getKey() . '&quiz_name=Algebra')
+            ->assertOk()
+            ->assertJsonCount(2, 'data');
+
+        // no match
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts?quiz_name=Nonexistent')
+            ->assertOk()
+            ->assertJsonCount(0, 'data');
+    }
+
     public function testAdminQuizAttemptListSorting(): void
     {
         $student = $this->makeStudent();
