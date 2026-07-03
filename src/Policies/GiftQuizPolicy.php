@@ -12,6 +12,11 @@ class GiftQuizPolicy
 {
     use HandlesAuthorization;
 
+    public function list(User $user): bool
+    {
+        return $user->can(TopicTypeGiftPermissionEnum::READ_GIFT_QUIZ);
+    }
+
     public function read(User $user, GiftQuiz $giftQuiz): bool
     {
         return $user->can(TopicTypeGiftPermissionEnum::READ_GIFT_QUIZ);
