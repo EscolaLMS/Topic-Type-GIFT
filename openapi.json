@@ -425,6 +425,56 @@
                 ]
             }
         },
+        "/api/admin/gift-quizes": {
+            "get": {
+                "tags": [
+                    "Gift Quiz"
+                ],
+                "summary": "List gift quizes of a course (for report filter select)",
+                "operationId": "287b96904bfab4c962e7e4bbb68409c1",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/GiftQuizSimpleResource"
+                                            }
+                                        },
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/admin/gift-quizes/{id}": {
             "get": {
                 "tags": [
@@ -1083,6 +1133,22 @@
                     },
                     "title": {
                         "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "GiftQuizSimpleResource": {
+                "properties": {
+                    "id": {
+                        "description": "topic_gift_quiz_id (value used to filter quiz reports)",
+                        "type": "number"
+                    },
+                    "title": {
+                        "description": "quiz title taken from its topic",
+                        "type": "string"
+                    },
+                    "topic_id": {
+                        "type": "number"
                     }
                 },
                 "type": "object"
