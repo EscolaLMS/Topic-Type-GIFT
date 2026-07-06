@@ -50,6 +50,21 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          description="tutor feedback (only returned when the attempt is ended)",
  *          type="string"
  *      ),
+ *      @OA\Property(
+ *          property="result_percent",
+ *          description="result as percent of max score (null when not ended or no max)",
+ *          type="number"
+ *      ),
+ *      @OA\Property(
+ *          property="is_passed",
+ *          description="whether the attempt passed min_pass_score (null when not ended or no min_pass_score)",
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
+ *          property="correct_answers_count",
+ *          description="number of answers with full score (null when not ended)",
+ *          type="number"
+ *      ),
  *     @OA\Property(
  *          property="user",
  *          description="user",
@@ -76,8 +91,6 @@ class QuizAttemptSimpleResource extends JsonResource
 {
     public function toArray($request): array
     {
-        $maxScore = $this->giftQuiz->questions->sum('score');
-        $resultScore = $this->answers->sum('score');
         $topic = $this->giftQuiz?->topic;
         $course = $topic?->lesson?->course;
 
@@ -87,10 +100,13 @@ class QuizAttemptSimpleResource extends JsonResource
             'topic_gift_quiz_id' => $this->topic_gift_quiz_id,
             'started_at' => $this->started_at,
             'end_at' => $this->end_at,
-            'max_score' => $maxScore,
+            'max_score' => $this->max_score,
             'min_pass_score' => $this->giftQuiz->min_pass_score,
-            'result_score' => $this->isEnded() ? $resultScore : null,
             'tutor_feedback' => $this->isEnded() ? $this->tutor_feedback : null,
+            'result_score' => $this->result_score,
+            'result_percent' => $this->result_percent,
+            'is_passed' => $this->is_passed,
+            'correct_answers_count' => $this->correct_answers_count,
             'is_ended' => $this->isEnded(),
             'user' => UserSimpleResource::make($this->user),
             'topic' => $topic ? TopicSimpleResource::make($topic) : null,
