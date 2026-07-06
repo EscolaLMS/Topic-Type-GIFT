@@ -5,6 +5,7 @@ namespace EscolaLms\TopicTypeGift\Services;
 use EscolaLms\TopicTypeGift\Dtos\AdminUpdateAttemptAnswerDto;
 use EscolaLms\TopicTypeGift\Dtos\SaveAllAttemptAnswersDto;
 use EscolaLms\TopicTypeGift\Dtos\SaveAttemptAnswerDto;
+use EscolaLms\TopicTypeGift\Events\QuizAttemptJournalGradeReadyEvent;
 use EscolaLms\TopicTypeGift\Jobs\MarkAttemptAsEnded;
 use EscolaLms\TopicTypeGift\Models\AttemptAnswer;
 use EscolaLms\TopicTypeGift\Models\GiftQuestion;
@@ -12,6 +13,7 @@ use EscolaLms\TopicTypeGift\Repositories\AttemptAnswerRepository;
 use EscolaLms\TopicTypeGift\Repositories\Contracts\GiftQuestionRepositoryContract;
 use EscolaLms\TopicTypeGift\Services\Contracts\AttemptAnswerServiceContract;
 use EscolaLms\TopicTypeGift\Strategies\GiftQuestionStrategyFactory;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
@@ -40,6 +42,7 @@ class AttemptAnswerService implements AttemptAnswerServiceContract
             'answer' => $dto->getAnswer(),
             'feedback' => $result->getFeedback(),
             'score' => $result->getScore(),
+            'graded_at' => $strategy->requiresManualGrading() ? null : Carbon::now(),
         ]);
     }
 
@@ -62,7 +65,20 @@ class AttemptAnswerService implements AttemptAnswerServiceContract
 
     public function adminUpdate(int $id, AdminUpdateAttemptAnswerDto $dto): AttemptAnswer
     {
-        /** @var AttemptAnswer */
-        return $this->answerRepository->update($dto->toArray(), $id);
+        /** @var AttemptAnswer $answer */
+        $answer = $this->answerRepository->update(
+            array_merge($dto->toArray(), ['graded_at' => Carbon::now()]),
+            $id
+        );
+
+        $attempt = $answer->attempt;
+
+        // Once the last open question is graded (or a graded attempt is re-graded),
+        // signal the journal so it can upsert the partial grade.
+        if ($attempt->isEnded() && $attempt->giftQuiz->counts_to_grade && $attempt->isFullyGraded()) {
+            event(new QuizAttemptJournalGradeReadyEvent($attempt->user, $attempt));
+        }
+
+        return $answer;
     }
 }
