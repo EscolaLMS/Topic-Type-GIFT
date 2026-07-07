@@ -1050,6 +1050,9 @@
                     },
                     "counts_to_grade": {
                         "type": "boolean"
+                    },
+                    "randomize_order": {
+                        "type": "boolean"
                     }
                 },
                 "type": "object"
