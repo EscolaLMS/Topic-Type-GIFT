@@ -31,6 +31,14 @@ The user will see the results when the attempt is finished.
 
 The answer to an essay type question is not automatically graded. The teacher should do it.
 
+When the quiz has `randomize_order` enabled, both the order of questions and the order of the
+answer options within each question are randomized per attempt (single/multiple choice options, and
+the two columns of matching questions). The shuffle is seeded with the attempt id, so the whole
+layout is random but stable for a given attempt (refreshing the page returns the same order), while
+different attempts of the same user may get a different one. When it is disabled (the default) the
+questions keep their configured `order` and choice options keep their source order (matching
+questions still shuffle their columns, as they always have, otherwise the pairs would line up).
+
 ## Installing
 
 - `composer require escolalms/topic-type-gift`
@@ -76,6 +84,9 @@ class topic_gift_quizzes {
    text value
    integer max_attempts
    integer max_execution_time
+   double precision min_pass_score
+   boolean counts_to_grade
+   boolean randomize_order
    bigint id
 }
 

@@ -44,6 +44,11 @@ use Illuminate\Support\Carbon;
  *          property="counts_to_grade",
  *          description="whether the quiz counts towards the final grade",
  *          type="boolean"
+ *      ),
+ *      @OA\Property(
+ *          property="randomize_order",
+ *          description="whether the question order is randomized per attempt",
+ *          type="boolean"
  *      )
  * )
  */
@@ -57,6 +62,7 @@ use Illuminate\Support\Carbon;
  * @property ?integer $max_execution_time
  * @property ?double $min_pass_score
  * @property bool $counts_to_grade
+ * @property bool $randomize_order
  * @property Carbon $created_at
  * @property Carbon $updated_at
  *
@@ -74,6 +80,7 @@ class GiftQuiz extends AbstractTopicContent
         'max_execution_time',
         'min_pass_score',
         'counts_to_grade',
+        'randomize_order',
     ];
 
     protected $casts = [
@@ -83,6 +90,7 @@ class GiftQuiz extends AbstractTopicContent
         'max_execution_time' => 'integer',
         'min_pass_score' => 'double',
         'counts_to_grade' => 'boolean',
+        'randomize_order' => 'boolean',
     ];
 
     public static function rules(): array
@@ -93,6 +101,7 @@ class GiftQuiz extends AbstractTopicContent
             'max_execution_time' => ['nullable', 'integer', 'min:1'],
             'min_pass_score' => ['nullable', 'numeric', 'min:0'],
             'counts_to_grade' => ['boolean'],
+            'randomize_order' => ['boolean'],
         ];
     }
 

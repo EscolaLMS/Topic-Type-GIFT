@@ -14,11 +14,16 @@ class MultipleChoiceQuestionStrategy extends QuestionStrategy
         $answerBlock = $this->service->getAnswerFromQuestion($escapedQuestion);
         $answers = preg_split('/\s*[=~]\s*/', $answerBlock, -1, PREG_SPLIT_NO_EMPTY);
 
+        $answers = collect($answers)
+            ->map(fn(string $answer) => $this->escapedcharPost($answer))
+            ->map(fn(string $answer) => $this->removeFeedbackFromAnswer($answer));
+
+        if ($this->shouldRandomizeOptions()) {
+            $answers = $answers->shuffle($this->optionsSeedFor('answers'));
+        }
+
         return [
-            'answers' => collect($answers)
-                ->map(fn(string $answer) => $this->escapedcharPost($answer))
-                ->map(fn(string $answer) => $this->removeFeedbackFromAnswer($answer))
-                ->toArray(),
+            'answers' => $answers->values()->toArray(),
         ];
     }
 

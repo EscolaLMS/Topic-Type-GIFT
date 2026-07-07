@@ -58,9 +58,22 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class GiftQuestionResource extends JsonResource
 {
+    /**
+     * Base seed used to randomize the order of the question options.
+     * Null keeps the options in their configured order.
+     */
+    private ?int $optionsSeed = null;
+
+    public function withOptionsSeed(?int $optionsSeed): self
+    {
+        $this->optionsSeed = $optionsSeed;
+
+        return $this;
+    }
+
     public function toArray($request): array
     {
-        $strategy = GiftQuestionStrategyFactory::create($this->resource);
+        $strategy = GiftQuestionStrategyFactory::create($this->resource, $this->optionsSeed);
 
         return [
             'id' => $this->id,

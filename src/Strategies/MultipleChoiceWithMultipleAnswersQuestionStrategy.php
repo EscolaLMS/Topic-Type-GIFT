@@ -11,10 +11,14 @@ class MultipleChoiceWithMultipleAnswersQuestionStrategy extends QuestionStrategy
 {
     public function getOptions(): array
     {
+        $answers = collect($this->getMappedAnswers())->pluck('value');
+
+        if ($this->shouldRandomizeOptions()) {
+            $answers = $answers->shuffle($this->optionsSeedFor('answers'));
+        }
+
         return [
-            'answers' => collect($this->getMappedAnswers())
-                ->pluck('value')
-                ->toArray(),
+            'answers' => $answers->values()->toArray(),
         ];
     }
 

@@ -31,6 +31,10 @@ use Illuminate\Support\Facades\Gate;
  *          property="counts_to_grade",
  *          type="boolean"
  *      ),
+ *      @OA\Property(
+ *          property="randomize_order",
+ *          type="boolean"
+ *      ),
  * )
  */
 class AdminUpdateGiftQuizRequest extends FormRequest

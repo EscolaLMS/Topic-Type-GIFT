@@ -20,6 +20,7 @@ class GiftQuizResource extends JsonResource implements TopicTypeResourceContract
             'max_execution_time' => $this->max_execution_time,
             'min_pass_score' => $this->min_pass_score,
             'counts_to_grade' => $this->counts_to_grade,
+            'randomize_order' => $this->randomize_order,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'questions' => AdminGiftQuestionResource::collection($this->questions->sortBy('order')),

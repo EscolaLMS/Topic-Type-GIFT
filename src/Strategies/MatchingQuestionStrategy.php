@@ -13,16 +13,24 @@ class MatchingQuestionStrategy extends QuestionStrategy
         $answers = $this->getCorrectAnswers();
 
         return [
-            'sub_questions' => $answers
-                ->map(fn($answer) => $answer[0])
-                ->shuffle()
-                ->toArray(),
-
-            'sub_answers' => $answers
-                ->map(fn($answer) => $answer[1])
-                ->shuffle()
-                ->toArray(),
+            'sub_questions' => $this->shuffleColumn($answers->map(fn($answer) => $answer[0]), 'sub_questions'),
+            'sub_answers' => $this->shuffleColumn($answers->map(fn($answer) => $answer[1]), 'sub_answers'),
         ];
+    }
+
+    /**
+     * Matching columns are always presented shuffled (otherwise the pairs would
+     * line up). When the quiz randomizes order the shuffle is seeded so it stays
+     * stable for a given attempt; otherwise it stays random per request as before.
+     * A distinct salt per column keeps the two columns from lining up.
+     */
+    private function shuffleColumn(Collection $items, string $salt): array
+    {
+        $items = $this->shouldRandomizeOptions()
+            ? $items->shuffle($this->optionsSeedFor($salt))
+            : $items->shuffle();
+
+        return $items->values()->toArray();
     }
 
     public function checkAnswer(array $answer): CheckAnswerDto

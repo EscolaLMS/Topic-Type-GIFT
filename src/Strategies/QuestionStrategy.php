@@ -13,11 +13,37 @@ abstract class QuestionStrategy implements QuestionStrategyContract
     protected GiftQuestionServiceContract $service;
     protected string $questionPlainText;
 
-    public function __construct(GiftQuestion $questionModel)
+    /**
+     * Base seed for randomizing the order of options presented to the student.
+     * Null when the order should not be randomized (quiz has randomize_order off
+     * or the question is rendered outside of an attempt). When set it is the
+     * attempt id, so the randomized order is stable for a given attempt.
+     */
+    protected ?int $optionsSeed;
+
+    public function __construct(GiftQuestion $questionModel, ?int $optionsSeed = null)
     {
         $this->questionModel = $questionModel;
         $this->service = app(GiftQuestionServiceContract::class);
         $this->questionPlainText = $this->service->removeComment($this->questionModel->value);
+        $this->optionsSeed = $optionsSeed;
+    }
+
+    protected function shouldRandomizeOptions(): bool
+    {
+        return $this->optionsSeed !== null;
+    }
+
+    /**
+     * Deterministic per-question seed derived from the base (attempt) seed, the
+     * question id and a salt. Guarantees the randomized option order is stable
+     * for a given attempt (a refresh returns the same order) while differing
+     * between questions and between the parts identified by $salt (e.g. the two
+     * columns of a matching question).
+     */
+    protected function optionsSeedFor(string $salt): int
+    {
+        return crc32($this->optionsSeed . '-' . $this->questionModel->getKey() . '-' . $salt);
     }
 
     public function getTitle(): string
