@@ -12,25 +12,25 @@ final class GiftQuestionStrategyFactory
     /**
      * @throws UnknownGiftTypeException
      */
-    public static function create(GiftQuestion $question): QuestionStrategyContract
+    public static function create(GiftQuestion $question, ?int $optionsSeed = null): QuestionStrategyContract
     {
         switch ($question->type) {
             case QuestionTypeEnum::MULTIPLE_CHOICE:
-                return new MultipleChoiceQuestionStrategy($question);
+                return new MultipleChoiceQuestionStrategy($question, $optionsSeed);
             case QuestionTypeEnum::MULTIPLE_CHOICE_WITH_MULTIPLE_RIGHT_ANSWERS:
-                return new MultipleChoiceWithMultipleAnswersQuestionStrategy($question);
+                return new MultipleChoiceWithMultipleAnswersQuestionStrategy($question, $optionsSeed);
             case QuestionTypeEnum::TRUE_FALSE:
-                return new TrueFalseQuestionStrategy($question);
+                return new TrueFalseQuestionStrategy($question, $optionsSeed);
             case QuestionTypeEnum::SHORT_ANSWERS:
-                return new ShortAnswerQuestionStrategy($question);
+                return new ShortAnswerQuestionStrategy($question, $optionsSeed);
             case QuestionTypeEnum::MATCHING:
-                return new MatchingQuestionStrategy($question);
+                return new MatchingQuestionStrategy($question, $optionsSeed);
             case QuestionTypeEnum::NUMERICAL_QUESTION:
-                return new NumericalQuestionStrategy($question);
+                return new NumericalQuestionStrategy($question, $optionsSeed);
             case QuestionTypeEnum::ESSAY:
-                return new EssayQuestionStrategy($question);
+                return new EssayQuestionStrategy($question, $optionsSeed);
             case QuestionTypeEnum::DESCRIPTION:
-                return new DescriptionQuestionStrategy($question);
+                return new DescriptionQuestionStrategy($question, $optionsSeed);
             default:
                 throw new UnknownGiftTypeException($question->type);
         }

@@ -29,6 +29,7 @@ class AdminReadGiftQuizApiTest extends TestCase
             'max_execution_time' => 60,
             'min_pass_score' => 30,
             'counts_to_grade' => true,
+            'randomize_order' => true,
         ]);
 
         $this->actingAs($this->admin, 'api')
@@ -42,6 +43,7 @@ class AdminReadGiftQuizApiTest extends TestCase
                     'max_execution_time',
                     'min_pass_score',
                     'counts_to_grade',
+                    'randomize_order',
                 ],
             ])
             ->assertJson([
@@ -52,6 +54,7 @@ class AdminReadGiftQuizApiTest extends TestCase
                     'max_execution_time' => 60,
                     'min_pass_score' => 30,
                     'counts_to_grade' => true,
+                    'randomize_order' => true,
                 ],
             ]);
     }

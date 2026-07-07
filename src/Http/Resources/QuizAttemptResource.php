@@ -2,8 +2,9 @@
 
 namespace EscolaLms\TopicTypeGift\Http\Resources;
 
+use EscolaLms\TopicTypeGift\Models\GiftQuestion;
 use EscolaLms\TopicTypeGift\Models\QuizAttempt;
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Collection;
 
 /**
  * @OA\Schema(
@@ -63,9 +64,37 @@ class QuizAttemptResource extends QuizAttemptSimpleResource
 {
     public function toArray($request): array
     {
+        // When randomize_order is on, both the question order and the order of
+        // options within each question are randomized, seeded with the attempt id
+        // so the whole layout is random but stable for a given attempt.
+        $optionsSeed = $this->giftQuiz->randomize_order ? $this->id : null;
+
+        $questions = $this->orderedQuestions()->map(
+            fn (GiftQuestion $question) => (new GiftQuestionResource($question))->withOptionsSeed($optionsSeed)
+        )->values();
+
         return array_merge(parent::toArray($request), [
-            'questions' => GiftQuestionResource::collection($this->giftQuiz->questions->sortBy('order')),
+            'questions' => $questions,
             'answers' => AttemptAnswerResource::collection($this->answers),
         ]);
+    }
+
+    /**
+     * Questions in the order they should be presented to the student.
+     *
+     * When the quiz has randomize_order enabled the questions are shuffled with
+     * the attempt id used as the seed. Sorting by id first gives a deterministic
+     * input order, so the same seed always yields the same permutation: the order
+     * is random but stable for a given attempt (a page refresh returns the same
+     * order), while different attempts (different seeds) may get different orders.
+     * Otherwise the questions keep their configured `order`.
+     */
+    private function orderedQuestions(): Collection
+    {
+        if ($this->giftQuiz->randomize_order) {
+            return $this->giftQuiz->questions->sortBy('id')->values()->shuffle($this->id);
+        }
+
+        return $this->giftQuiz->questions->sortBy('order')->values();
     }
 }

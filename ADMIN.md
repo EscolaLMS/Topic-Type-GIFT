@@ -16,6 +16,7 @@ At this point, you can configure the GiftQuiz Type settings:
 * **Max attempts** - sets the maximum number of attempts allowed for the quiz by the end user.
 * **Max execution time** - sets the time limit for completing the quiz.
 * **Min pass score** - sets the minimum score a user must achieve to pass the quiz.
+* **Randomize order** - when enabled, both the order of questions and the order of the answer options within each question are randomized for each attempt. The same attempt always shows the same order (a refresh does not change it), while different attempts may get a different order. Disabled by default.
 
 >[!WARNING]
 > Create this Topic before adding questions.Questions can only be added after saving on this screen.

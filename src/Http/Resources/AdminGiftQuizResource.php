@@ -44,6 +44,11 @@ use Illuminate\Http\Resources\Json\JsonResource;
  *          type="boolean"
  *      ),
  *      @OA\Property(
+ *          property="randomize_order",
+ *          description="whether the question order is randomized per attempt",
+ *          type="boolean"
+ *      ),
+ *      @OA\Property(
  *          property="questions",
  *          description="questions",
  *          type="array",
@@ -67,6 +72,7 @@ class AdminGiftQuizResource extends JsonResource
             'max_execution_time' => $this->max_execution_time,
             'min_pass_score' => $this->min_pass_score,
             'counts_to_grade' => $this->counts_to_grade,
+            'randomize_order' => $this->randomize_order,
             'questions' => AdminGiftQuestionResource::collection($this->questions->sortBy('order')),
         ];
     }

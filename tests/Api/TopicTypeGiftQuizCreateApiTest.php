@@ -89,4 +89,48 @@ class TopicTypeGiftQuizCreateApiTest extends TestCase
             'counts_to_grade' => true,
         ]);
     }
+
+    public function testCreateGiftQuizDefaultsRandomizeOrderToFalse(): void
+    {
+        $lesson = Lesson::factory()
+            ->for(Course::factory())
+            ->create();
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')
+            ->postJson('/api/admin/topics', [
+                'title' => 'GiftQuiz',
+                'lesson_id' => $lesson->getKey(),
+                'topicable_type' => GiftQuiz::class,
+                'value' => 'lorem ipsum',
+            ])
+            ->assertCreated();
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $response->getData()->data->topicable->id,
+            'randomize_order' => false,
+        ]);
+    }
+
+    public function testCreateGiftQuizWithRandomizeOrder(): void
+    {
+        $lesson = Lesson::factory()
+            ->for(Course::factory())
+            ->create();
+
+        $response = $this->actingAs($this->makeAdmin(), 'api')
+            ->postJson('/api/admin/topics', [
+                'title' => 'GiftQuiz',
+                'lesson_id' => $lesson->getKey(),
+                'topicable_type' => GiftQuiz::class,
+                'value' => 'lorem ipsum',
+                'randomize_order' => true,
+            ])
+            ->assertCreated()
+            ->assertJsonFragment(['randomize_order' => true]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $response->getData()->data->topicable->id,
+            'randomize_order' => true,
+        ]);
+    }
 }

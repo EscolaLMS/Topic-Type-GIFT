@@ -105,4 +105,60 @@ class AdminUpdateGiftQuizApiTest extends TestCase
             'counts_to_grade' => true,
         ]);
     }
+
+    public function testAdminUpdateGiftQuizSetsRandomizeOrder(): void
+    {
+        $quiz = GiftQuiz::factory()->create(['randomize_order' => false]);
+
+        $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->putJson('api/admin/gift-quizes/' . $quiz->getKey(), [
+                'value' => $quiz->value,
+                'randomize_order' => true,
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['randomize_order' => true]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $quiz->getKey(),
+            'randomize_order' => true,
+        ]);
+    }
+
+    public function testAdminUpdateGiftQuizCanDisableRandomizeOrder(): void
+    {
+        $quiz = GiftQuiz::factory()->create(['randomize_order' => true]);
+
+        $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->putJson('api/admin/gift-quizes/' . $quiz->getKey(), [
+                'value' => $quiz->value,
+                'randomize_order' => false,
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['randomize_order' => false]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $quiz->getKey(),
+            'randomize_order' => false,
+        ]);
+    }
+
+    public function testAdminUpdateGiftQuizKeepsRandomizeOrderWhenOmitted(): void
+    {
+        $quiz = GiftQuiz::factory()->create(['randomize_order' => true]);
+
+        $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->putJson('api/admin/gift-quizes/' . $quiz->getKey(), [
+                'value' => $quiz->value,
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['randomize_order' => true]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $quiz->getKey(),
+            'randomize_order' => true,
+        ]);
+    }
 }

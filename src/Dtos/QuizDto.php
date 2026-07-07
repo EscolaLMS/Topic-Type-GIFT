@@ -14,14 +14,16 @@ class QuizDto implements DtoContract, InstantiateFromRequest
     private ?int $maxExecutionTime;
     private ?float $minPassScore;
     private ?bool $countsToGrade;
+    private ?bool $randomizeOrder;
 
-    public function __construct(string $value, ?int $maxAttempts, ?int $maxExecutionTime, ?float $minPassScore, ?bool $countsToGrade = null)
+    public function __construct(string $value, ?int $maxAttempts, ?int $maxExecutionTime, ?float $minPassScore, ?bool $countsToGrade = null, ?bool $randomizeOrder = null)
     {
         $this->value = $value;
         $this->maxAttempts = $maxAttempts;
         $this->maxExecutionTime = $maxExecutionTime;
         $this->minPassScore = $minPassScore;
         $this->countsToGrade = $countsToGrade;
+        $this->randomizeOrder = $randomizeOrder;
     }
 
     public function toArray(): array
@@ -37,6 +39,10 @@ class QuizDto implements DtoContract, InstantiateFromRequest
             $result['counts_to_grade'] = $this->countsToGrade;
         }
 
+        if (!is_null($this->randomizeOrder)) {
+            $result['randomize_order'] = $this->randomizeOrder;
+        }
+
         return $result;
     }
 
@@ -47,7 +53,8 @@ class QuizDto implements DtoContract, InstantiateFromRequest
             $request->input('max_attempts'),
             $request->input('max_execution_time'),
             $request->input('min_pass_score'),
-            $request->has('counts_to_grade') ? $request->boolean('counts_to_grade') : null
+            $request->has('counts_to_grade') ? $request->boolean('counts_to_grade') : null,
+            $request->has('randomize_order') ? $request->boolean('randomize_order') : null
         );
     }
 }
