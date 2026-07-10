@@ -21,6 +21,7 @@ Route::prefix('api')->middleware(['auth:api'])->group(function () {
 
         Route::prefix('quiz-attempts')->group(function () {
             Route::get(null, [QuizAttemptApiAdminController::class, 'index']);
+            Route::get('export', [QuizAttemptApiAdminController::class, 'export']);
             Route::get('{id}', [QuizAttemptApiAdminController::class, 'read']);
             Route::patch('{id}/feedback', [QuizAttemptApiAdminController::class, 'feedback']);
         });

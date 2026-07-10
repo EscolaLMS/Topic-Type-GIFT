@@ -2,10 +2,12 @@
 
 namespace EscolaLms\TopicTypeGift\Http\Controllers\Swagger;
 
+use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminExportQuizResultsRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminListQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminReadQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminUpdateQuizAttemptFeedbackRequest;
 use Illuminate\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 interface QuizAttemptApiAdminSwagger
 {
@@ -175,4 +177,40 @@ interface QuizAttemptApiAdminSwagger
      * )
      */
     public function feedback(AdminUpdateQuizAttemptFeedbackRequest $request): JsonResponse;
+
+    /**
+     * @OA\Get(
+     *      path="/api/admin/quiz-attempts/export",
+     *      summary="Export course quiz results to an XLSX file",
+     *      tags={"Admin Gift Quiz Attempt"},
+     *      description="Exports all attempts of all students. Without topic_gift_quiz_id every quiz of the course is exported to a separate worksheet; with it a single worksheet is exported.",
+     *      security={
+     *          {"passport": {}},
+     *      },
+     *     @OA\Parameter(
+     *          name="course_id",
+     *          required=true,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer",
+     *          ),
+     *      ),
+     *     @OA\Parameter(
+     *          name="topic_gift_quiz_id",
+     *          required=false,
+     *          in="query",
+     *          @OA\Schema(
+     *              type="integer",
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Successfull operation",
+     *          @OA\MediaType(
+     *              mediaType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+     *          )
+     *      )
+     * )
+     */
+    public function export(AdminExportQuizResultsRequest $request): BinaryFileResponse;
 }

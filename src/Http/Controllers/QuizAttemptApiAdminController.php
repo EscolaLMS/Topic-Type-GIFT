@@ -3,7 +3,9 @@
 namespace EscolaLms\TopicTypeGift\Http\Controllers;
 
 use EscolaLms\Core\Http\Controllers\EscolaLmsBaseController;
+use EscolaLms\TopicTypeGift\Export\QuizResultsExport;
 use EscolaLms\TopicTypeGift\Http\Controllers\Swagger\QuizAttemptApiAdminSwagger;
+use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminExportQuizResultsRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminListQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminReadQuizAttemptRequest;
 use EscolaLms\TopicTypeGift\Http\Requests\Admin\AdminUpdateQuizAttemptFeedbackRequest;
@@ -11,6 +13,8 @@ use EscolaLms\TopicTypeGift\Http\Resources\QuizAttemptResource;
 use EscolaLms\TopicTypeGift\Http\Resources\QuizAttemptSimpleResource;
 use EscolaLms\TopicTypeGift\Services\Contracts\QuizAttemptServiceContract;
 use Illuminate\Http\JsonResponse;
+use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class QuizAttemptApiAdminController extends EscolaLmsBaseController implements QuizAttemptApiAdminSwagger
 {
@@ -38,5 +42,14 @@ class QuizAttemptApiAdminController extends EscolaLmsBaseController implements Q
         $result = $this->attemptService->updateFeedback($request->getId(), $request->getFeedback());
 
         return $this->sendResponseForResource(QuizAttemptResource::make($result), __('Updated successfully'));
+    }
+
+    public function export(AdminExportQuizResultsRequest $request): BinaryFileResponse
+    {
+        return Excel::download(
+            new QuizResultsExport($request->getCourseId(), $request->getQuizId(), $request->getAuthorId()),
+            'quiz-results.xlsx',
+            \Maatwebsite\Excel\Excel::XLSX
+        );
     }
 }
