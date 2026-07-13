@@ -46,10 +46,16 @@ class QuizAttemptApiAdminController extends EscolaLmsBaseController implements Q
 
     public function export(AdminExportQuizResultsRequest $request): BinaryFileResponse
     {
+        $format = $request->getExportFormat();
+
+        $writerType = $format === AdminExportQuizResultsRequest::FORMAT_XLS
+            ? \Maatwebsite\Excel\Excel::XLS
+            : \Maatwebsite\Excel\Excel::XLSX;
+
         return Excel::download(
             new QuizResultsExport($request->getCourseId(), $request->getQuizId(), $request->getAuthorId()),
-            'quiz-results.xlsx',
-            \Maatwebsite\Excel\Excel::XLSX
+            'quiz-results.' . $format,
+            $writerType
         );
     }
 }

@@ -48,6 +48,79 @@ class AdminExportQuizResultsApiTest extends TestCase
             ->assertUnprocessable();
     }
 
+    private function courseWithOneAttempt(): Course
+    {
+        $course = Course::factory()->create();
+        $quiz = GiftQuiz::factory()->create(['value' => 'Format quiz']);
+        $this->attachQuizToCourse($quiz, $course);
+        QuizAttempt::factory()->create(['topic_gift_quiz_id' => $quiz->getKey()]);
+
+        return $course;
+    }
+
+    public function testExportDefaultsToXlsx(): void
+    {
+        Excel::fake();
+
+        $course = $this->courseWithOneAttempt();
+
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts/export?course_id=' . $course->getKey())
+            ->assertOk();
+
+        Excel::assertDownloaded('quiz-results.xlsx');
+    }
+
+    public function testExportCanReturnXls(): void
+    {
+        Excel::fake();
+
+        $course = $this->courseWithOneAttempt();
+
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts/export?course_id=' . $course->getKey() . '&format=xls')
+            ->assertOk();
+
+        Excel::assertDownloaded('quiz-results.xls');
+    }
+
+    public function testExportCanReturnXlsxExplicitly(): void
+    {
+        Excel::fake();
+
+        $course = $this->courseWithOneAttempt();
+
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts/export?course_id=' . $course->getKey() . '&format=xlsx')
+            ->assertOk();
+
+        Excel::assertDownloaded('quiz-results.xlsx');
+    }
+
+    public function testExportFormatIsCaseInsensitive(): void
+    {
+        Excel::fake();
+
+        $course = $this->courseWithOneAttempt();
+
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts/export?course_id=' . $course->getKey() . '&format=XLS')
+            ->assertOk();
+
+        Excel::assertDownloaded('quiz-results.xls');
+    }
+
+    public function testExportRejectsUnsupportedFormat(): void
+    {
+        Excel::fake();
+
+        $course = $this->courseWithOneAttempt();
+
+        $this->actingAs($this->makeAdmin(), 'api')
+            ->getJson('api/admin/quiz-attempts/export?course_id=' . $course->getKey() . '&format=csv')
+            ->assertUnprocessable();
+    }
+
     public function testExportWholeCourseHasSheetPerQuiz(): void
     {
         Excel::fake();
