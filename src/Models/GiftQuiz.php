@@ -3,6 +3,7 @@
 namespace EscolaLms\TopicTypeGift\Models;
 
 use EscolaLms\TopicTypeGift\Database\Factories\GiftQuizFactory;
+use EscolaLms\TopicTypeGift\Events\QuizGradabilityChangedEvent;
 use EscolaLms\TopicTypes\Models\TopicContent\AbstractTopicContent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -118,5 +119,16 @@ class GiftQuiz extends AbstractTopicContent
     public function getMorphClass()
     {
         return self::class;
+    }
+
+    protected static function booted(): void
+    {
+        parent::booted();
+
+        static::updated(function (GiftQuiz $quiz) {
+            if ($quiz->wasChanged('counts_to_grade')) {
+                event(new QuizGradabilityChangedEvent($quiz));
+            }
+        });
     }
 }
