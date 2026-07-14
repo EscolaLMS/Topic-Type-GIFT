@@ -754,6 +754,62 @@
                 ]
             }
         },
+        "/api/admin/quiz-attempts/export": {
+            "get": {
+                "tags": [
+                    "Admin Gift Quiz Attempt"
+                ],
+                "summary": "Export course quiz results to an XLSX or XLS file",
+                "description": "Exports all attempts of all students. Without topic_gift_quiz_id every quiz of the course is exported to a separate worksheet; with it a single worksheet is exported. The format query parameter selects the spreadsheet format (xlsx or xls), defaulting to xlsx.",
+                "operationId": "11eaefc5693d5ba06228f1eaa81e6d5a",
+                "parameters": [
+                    {
+                        "name": "course_id",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "topic_gift_quiz_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "in": "query",
+                        "description": "Output spreadsheet format. Defaults to xlsx.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "xlsx",
+                            "enum": [
+                                "xlsx",
+                                "xls"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successfull operation",
+                        "content": {
+                            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": {},
+                            "application/vnd.ms-excel": {}
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
         "/api/quiz-attempts": {
             "get": {
                 "tags": [
