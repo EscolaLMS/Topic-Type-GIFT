@@ -34,7 +34,7 @@ class QuizResultsExport implements WithMultipleSheets
                 'topic.lesson.course.authors',
                 fn (Builder $authors) => $authors->whereKey($this->authorId)
             ))
-            ->with('questions')
+            ->with(['questions', 'topic'])
             ->orderBy('id')
             ->get();
 
@@ -49,14 +49,14 @@ class QuizResultsExport implements WithMultipleSheets
     }
 
     /**
-     * Build a worksheet title from the quiz value: strip characters Excel forbids in
+     * Build a worksheet title from the quiz's topic title: strip characters Excel forbids in
      * sheet names, enforce the 31 character limit and keep it unique within the workbook.
      *
      * @param string[] $usedTitles
      */
     private function sheetTitle(GiftQuiz $quiz, array &$usedTitles): string
     {
-        $base = trim(preg_replace('/[\\\\\/\?\*\[\]:]/', ' ', (string) $quiz->value));
+        $base = trim(preg_replace('/[\\\\\/\?\*\[\]:]/', ' ', (string) $quiz->topic?->title));
 
         if ($base === '') {
             $base = 'Quiz ' . $quiz->getKey();
