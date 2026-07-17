@@ -26,10 +26,13 @@ class AdminExportQuizResultsApiTest extends TestCase
         $this->seed(TopicTypeGiftPermissionSeeder::class);
     }
 
-    private function attachQuizToCourse(GiftQuiz $quiz, Course $course): void
+    private function attachQuizToCourse(GiftQuiz $quiz, Course $course, ?string $topicTitle = null): void
     {
         $lesson = Lesson::factory()->state(['course_id' => $course->getKey()])->create();
-        $topic = Topic::factory()->state(['lesson_id' => $lesson->getKey()])->create();
+        $topic = Topic::factory()->state(array_filter([
+            'lesson_id' => $lesson->getKey(),
+            'title' => $topicTitle,
+        ]))->create();
         $topic->topicable()->associate($quiz)->save();
     }
 
@@ -127,14 +130,14 @@ class AdminExportQuizResultsApiTest extends TestCase
 
         $course = Course::factory()->create();
 
-        $quiz1 = GiftQuiz::factory()->create(['value' => 'First quiz']);
-        $quiz2 = GiftQuiz::factory()->create(['value' => 'Second quiz']);
+        $quiz1 = GiftQuiz::factory()->create();
+        $quiz2 = GiftQuiz::factory()->create();
         // A quiz belonging to a different course must not appear.
-        $otherQuiz = GiftQuiz::factory()->create(['value' => 'Other course quiz']);
+        $otherQuiz = GiftQuiz::factory()->create();
 
-        $this->attachQuizToCourse($quiz1, $course);
-        $this->attachQuizToCourse($quiz2, $course);
-        $this->attachQuizToCourse($otherQuiz, Course::factory()->create());
+        $this->attachQuizToCourse($quiz1, $course, 'First quiz');
+        $this->attachQuizToCourse($quiz2, $course, 'Second quiz');
+        $this->attachQuizToCourse($otherQuiz, Course::factory()->create(), 'Other course quiz');
 
         QuizAttempt::factory()
             ->state(new Sequence(
@@ -165,10 +168,10 @@ class AdminExportQuizResultsApiTest extends TestCase
 
         $course = Course::factory()->create();
 
-        $quiz1 = GiftQuiz::factory()->create(['value' => 'Quiz one']);
-        $quiz2 = GiftQuiz::factory()->create(['value' => 'Quiz two']);
-        $this->attachQuizToCourse($quiz1, $course);
-        $this->attachQuizToCourse($quiz2, $course);
+        $quiz1 = GiftQuiz::factory()->create();
+        $quiz2 = GiftQuiz::factory()->create();
+        $this->attachQuizToCourse($quiz1, $course, 'Quiz one');
+        $this->attachQuizToCourse($quiz2, $course, 'Quiz two');
 
         QuizAttempt::factory()->count(2)->create(['topic_gift_quiz_id' => $quiz1->getKey()]);
         QuizAttempt::factory()->count(2)->create(['topic_gift_quiz_id' => $quiz2->getKey()]);
