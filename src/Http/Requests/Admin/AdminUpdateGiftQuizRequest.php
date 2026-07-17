@@ -32,6 +32,10 @@ use Illuminate\Support\Facades\Gate;
  *          type="boolean"
  *      ),
  *      @OA\Property(
+ *          property="weight",
+ *          type="integer"
+ *      ),
+ *      @OA\Property(
  *          property="randomize_order",
  *          type="boolean"
  *      ),

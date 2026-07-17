@@ -17,6 +17,7 @@ class GiftQuizFactory extends Factory
             'max_execution_time' => $this->faker->numberBetween(1, 20),
             'min_pass_score' => $this->faker->numberBetween(1, 10),
             'counts_to_grade' => $this->faker->boolean(),
+            'weight' => $this->faker->numberBetween(1, 10),
             'randomize_order' => $this->faker->boolean(),
         ];
     }
