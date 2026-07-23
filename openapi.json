@@ -1107,6 +1107,9 @@
                     "counts_to_grade": {
                         "type": "boolean"
                     },
+                    "weight": {
+                        "type": "integer"
+                    },
                     "randomize_order": {
                         "type": "boolean"
                     }
