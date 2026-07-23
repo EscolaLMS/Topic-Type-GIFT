@@ -88,6 +88,25 @@ class AdminUpdateGiftQuizApiTest extends TestCase
         ]);
     }
 
+    public function testAdminUpdateGiftQuizSetsWeight(): void
+    {
+        $quiz = GiftQuiz::factory()->create(['weight' => 1]);
+
+        $this
+            ->actingAs($this->makeAdmin(), 'api')
+            ->putJson('api/admin/gift-quizes/' . $quiz->getKey(), [
+                'value' => $quiz->value,
+                'weight' => 5,
+            ])
+            ->assertOk()
+            ->assertJsonFragment(['weight' => 5]);
+
+        $this->assertDatabaseHas('topic_gift_quizzes', [
+            'id' => $quiz->getKey(),
+            'weight' => 5,
+        ]);
+    }
+
     public function testAdminUpdateGiftQuizKeepsCountsToGradeWhenOmitted(): void
     {
         $quiz = GiftQuiz::factory()->create(['counts_to_grade' => true]);
